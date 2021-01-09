@@ -2,23 +2,28 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 const Header = (props) => {
-  console.log(props);
+  console.log("Header", props);
   return <h1>{props.course}</h1>
 }
 
+const Part = (props) => {
+  console.log("Part", props);
+  return <p>{props.part} {props.ex}</p> 
+}
+
 const Content = (props) => {
-  console.log(props);
+  console.log("Content",props);
   return (
   <div>
-    <p>{props.part1} {props.ex1}</p> 
-    <p>{props.part2} {props.ex2}</p> 
-    <p>{props.part3} {props.ex3}</p> 
+    <Part part={props.part1} ex={props.ex1} />
+    <Part part={props.part2} ex={props.ex2} />
+    <Part part={props.part3} ex={props.ex3} />   
   </div>
   )
 }
 
 const Total = (props) => {
-  console.log(props);
+  console.log("Total", props);
   return <p>Number of exercises {props.ex1 + props.ex2 + props.ex3}</p>
     
 }
