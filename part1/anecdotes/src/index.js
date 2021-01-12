@@ -1,16 +1,41 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
-const App = (props) => {
-  const [selected, setSelected] = useState(0)
+const Anecdotes = ({ quote, selected }) => {
+  return <p>{quote[selected]}</p>
+}
 
+const Votes = ({ votes, selected }) => {
+  return <p>has {votes[selected]} votes</p>
+}
+
+const Button = ({ handleClick, text }) => {
+  return <button onClick={handleClick}>{text}</button>
+}
+
+const App = props => {
+  const initialVotes = Array(props.anecdotes.length).fill(0)
+
+  const [selected, setSelected] = useState(0)
+  const [votes, setVotes] = useState(initialVotes)
+
+  const updateVote = () => {
+    // Create copy of votes
+    let updatedVotes = [...votes];
+    // Add the vote
+    updatedVotes[selected]++;
+    // Update the state with the new vote
+    setVotes(updatedVotes);
+
+  }
+ 
   // Generate a random number between 0 and 5
   const generateRandomNum = () => {
     return Math.floor(Math.random() * 6)
   }
 
   // Show random anecdote when button is clicked.
-  const handleClick = () => {
+  const getRanQuote = () => {
     let randomNum = generateRandomNum()
 
     // If randomNum is same as selected, generate new random number
@@ -22,11 +47,13 @@ const App = (props) => {
 
   return (
     <div>
-      <p>{props.anecdotes[selected]}</p>
-      <button onClick={handleClick}>next anecdotes</button>
+      <Anecdotes quote={anecdotes} selected={selected} />
+      <Votes votes={votes} selected={selected} />
+      <Button handleClick={updateVote} text="vote" />
+      <Button handleClick={getRanQuote} text="next anecdotes" />
     </div>
   )
-
+  
   }
 
  
