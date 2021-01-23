@@ -2,18 +2,30 @@ import React, { useState } from 'react'
 import Person from "./Components/Person"
 
 const App = () => {
-    const [persons, setPersons] = useState([
-        { name: 'Mainul Islam' }
-    ])
-    const [newName, setNewName] = useState('')
+    const [persons, setPersons] = useState([{name: "Mainul Islam"}])
+    const [newName, setNewName] = useState("")
 
+   // Submit Form
     const addPerson = (event) => {
         event.preventDefault()
         const newPerson = {
             name: newName
         }
 
+        // Check if person is already exist to the phonebook
+        const alreadyExists = persons.some(person => person.name === newName)
+
+        if (newName === "") {
+            return;
+        }
+
+        if (alreadyExists) {
+            alert(`${newName} is already added to phonebook`)
+            return;
+        }
+
         setPersons(persons.concat(newPerson))
+        // clear input fields
         setNewName('')
     }
     
