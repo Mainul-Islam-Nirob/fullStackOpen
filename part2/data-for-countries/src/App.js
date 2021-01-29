@@ -6,25 +6,29 @@ import Countries from './components/Countries'
 const App = () => {
   const [countries, setCountries] = useState([])
   const [filter, setFilter] = useState("")
-  const [filteredCountries, setFilteredCountries] = useState([])
+
 
 // Fetch country data from api
   useEffect(() => {
     axios
       .get('https://restcountries.eu/rest/v2/all')
       .then(response => {
-        setCountries(response.data)
+        if (filter !== "") {
+          const searchResult = response.data.filter(country =>
+            country.name.toLowerCase().includes(filter.toLowerCase())
+          )
+          setCountries(searchResult)
+        }
       })
-  }, [])
+  }, [filter])
    
   const handleSearchChange = (event) => {
     setFilter(event.target.value)
-    
-      const searchResult = countries.filter(country =>
-        country.name.toLowerCase().includes(event.target.value.toLowerCase())
-      )
-      setFilteredCountries(searchResult) 
-    } 
+  }
+    // somthing is missing
+  const handleClick = countryName => {
+   setFilter(countryName)
+  }
   
   return (
   <div>
@@ -35,7 +39,8 @@ const App = () => {
         onChange={handleSearchChange}
         />
       <Countries
-        countries={filteredCountries}
+        handleClick={handleClick}
+        countries={countries}
       />
   </div>
   )
