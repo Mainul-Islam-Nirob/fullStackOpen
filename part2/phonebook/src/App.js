@@ -11,16 +11,14 @@ const App = () => {
     const [filteredPersons, setFilteredPersons] = useState(null)
 
     useEffect(() => {
-        console.log('effect')
         axios
             .get('http://localhost:3001/persons')
             .then(response => {
-                console.log('promise fulfilled')
                 setPersons(response.data)
             })
 
     }, [])
-    console.log('render', persons.length, 'persons')
+
    // Submit Form
     const addPerson = (event) => {
         event.preventDefault()
@@ -41,10 +39,15 @@ const App = () => {
             return;
         }
 
-        setPersons(persons.concat(newPerson))
-        // clear input fields
-        setNewName('')
-        setNewNumber('')
+        axios
+            .post('http://localhost:3001/persons', newPerson)
+            .then(response => {
+                setPersons(persons.concat(response.data))
+                // clear input fields
+                setNewName('')
+                setNewNumber('')
+            })
+        
     }
     
     const handleNameChange = (event) => {
