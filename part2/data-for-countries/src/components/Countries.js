@@ -1,8 +1,9 @@
 import React from 'react'
 import Country from './Country'
 import CountryDetail from './CountryDetail'
+import WeatherData from './WeatherData'
 
-const Countries = ({countries, handleClick}) => {
+const Countries = ({countries, handleClick, weatherData}) => {
     if (countries.length > 10) {
         return (
             <div>
@@ -30,6 +31,8 @@ const Countries = ({countries, handleClick}) => {
                         country={country}
                     />
                 ))}
+                
+                <WeatherData weatherData={weatherData} />
             </div>
         )
     } else {
