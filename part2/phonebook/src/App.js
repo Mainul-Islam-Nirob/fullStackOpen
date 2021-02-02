@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
+import "./index.css"
 import Persons from "./Components/Persons"
 import InputField from './Components/InputField'
 import PersonForm from './Components/PersonForm'
 import personService from './services/persons'
+import Notification from './Components/Notification'
 
 const App = () => {
     const [persons, setPersons] = useState([])
@@ -10,6 +12,8 @@ const App = () => {
     const [newNumber, setNewNumber] = useState("")
     const [filter, setFilter] = useState("")
     const [filteredPersons, setFilteredPersons] = useState(null)
+    const [notification, setNotification] = useState(null)
+    
   
     useEffect(() => {
         personService
@@ -72,7 +76,12 @@ const App = () => {
                                 person.id !== id ? person : returnedPerson
                                 )
                          ) 
+                         setNotification(`Number updated for ${person.name}`)
+                         setTimeout(() => {
+                             setNotification(null)
+                         }, 5000)
                     })
+                    
             }
             setNewName("")
             setNewNumber("")
@@ -83,6 +92,11 @@ const App = () => {
             .create(newPerson)
             .then(returnedPerson => {
                 setPersons(persons.concat(returnedPerson))
+
+                setNotification(`${returnedPerson.name} is added`)
+                setTimeout(() => {
+                    setNotification(null)
+                }, 5000)
                 // clear input fields
                 setNewName('')
                 setNewNumber('')
@@ -109,6 +123,8 @@ const App = () => {
         <div>
             <h2>Phonebook</h2>
 
+           <Notification message={notification} className="success" />
+ 
             <InputField label="Filter shown with:" 
              value={filter} 
              onChange={handleFilterChange}
