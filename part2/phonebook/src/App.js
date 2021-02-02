@@ -10,7 +10,7 @@ const App = () => {
     const [newNumber, setNewNumber] = useState("")
     const [filter, setFilter] = useState("")
     const [filteredPersons, setFilteredPersons] = useState(null)
-
+  
     useEffect(() => {
         personService
             .getAll()
@@ -19,6 +19,25 @@ const App = () => {
             })
 
     }, [])
+
+    const handleNameChange = (event) => {
+        setNewName(event.target.value)
+    }
+
+    const handleNumberChange = (event) => {
+        setNewNumber(event.target.value)
+    }
+
+    const handleFilterChange = (event) => {
+        setFilter(event.target.value)
+
+        const filtered = persons.filter(person =>
+            // Check if the search term is exist in the names of phonebook
+            person.name.toLowerCase().includes(event.target.value.toLowerCase())
+        )
+
+        setFilteredPersons(filtered);
+    }
 
    // Submit Form
     const addPerson = (event) => {
@@ -36,8 +55,28 @@ const App = () => {
         }
 
         if (alreadyExists) {
-            alert(`${newName} is already added to phonebook`)
-            return;
+            const person = persons.find(p => p.name === newName)
+            const changedPerson = {...person, number: newNumber}
+            const {id} = person
+            
+            const confirmUpdate = window.confirm(
+                `${newName} is already added to phonebook, replact the old number with a new one?`
+            )
+           
+            if (confirmUpdate) {
+                personService
+                    .update(id, changedPerson)
+                    .then(returnedPerson => {
+                        setPersons(
+                            persons.map(person =>
+                                person.id !== id ? person : returnedPerson
+                                )
+                         ) 
+                    })
+            }
+            setNewName("")
+            setNewNumber("")
+            return
         }
 
         personService
@@ -50,24 +89,7 @@ const App = () => {
             })        
     }
     
-    const handleNameChange = (event) => {
-        setNewName(event.target.value)
-    }
-
-    const handleNumberChange = (event) => {
-        setNewNumber(event.target.value)
-    }
-    
-    const handleFilterChange = (event) => {
-        setFilter(event.target.value)
-        
-        const filtered = persons.filter(person =>
-             // Check if the search term is exist in the names of phonebook
-             person.name.toLowerCase().includes(event.target.value.toLowerCase())
-             )
-             
-             setFilteredPersons(filtered);
-    }
+ 
 
     const handleDelete = id => {
         const person = persons.find(person => person.id === id)
