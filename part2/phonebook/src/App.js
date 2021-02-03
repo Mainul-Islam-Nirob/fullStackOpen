@@ -76,7 +76,9 @@ const App = () => {
                                 person.id !== id ? person : returnedPerson
                                 )
                          ) 
-                         setNotification(`Number updated for ${person.name}`)
+                         setNotification({
+                             success: `Number updated for ${person.name}`
+                         })
                          setTimeout(() => {
                              setNotification(null)
                          }, 5000)
@@ -93,7 +95,9 @@ const App = () => {
             .then(returnedPerson => {
                 setPersons(persons.concat(returnedPerson))
 
-                setNotification(`${returnedPerson.name} is added`)
+                setNotification({
+                    success: `Added ${returnedPerson.name}`
+                })
                 setTimeout(() => {
                     setNotification(null)
                 }, 5000)
@@ -110,21 +114,38 @@ const App = () => {
         const confirmDelete = window.confirm(`Delete ${person.name}?`)
 
         if (confirmDelete) {
-            personService.deletePerson(id).then(() => {
-               const filteredPersons = persons.filter(person => person.id!== id) 
-               setPersons(filteredPersons)
+            personService
+                .deletePerson(id)
+                .then(() => {
+                    const filteredPersons = persons.filter(person => person.id!== id) 
+                    setPersons(filteredPersons)
 
-               setFilter("")
-            })
+                    setFilter("")})
+                .catch(error => {
+                    setNotification({
+                        error: `Information of ${person.name} has already been removed from server`
+                    })
+                    setTimeout(() => {
+                        setNotification({error: null})
+                    }, 5000)
+                    setPersons(persons.filter(p => p.id !== id))
+                })
+                
+
         }
     }
 
     return (
         <div>
             <h2>Phonebook</h2>
-
-           <Notification message={notification} className="success" />
- 
+        
+           <Notification
+                message={notification?.success || notification?.error} 
+                className={notification?.success ? "success" : notification?.error ? "error" : null}
+            />
+    {
+                console.log(notification?.success ? "success" : "error")
+    }
             <InputField label="Filter shown with:" 
              value={filter} 
              onChange={handleFilterChange}
