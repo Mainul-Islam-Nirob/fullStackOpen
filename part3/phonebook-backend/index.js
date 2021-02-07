@@ -21,6 +21,41 @@ let persons = [
         "id": 4,
         "name": "Aman Mahbub Hasan",
         "number": "01719121739"
+    },
+    {
+        "id": 5,
+        "name": "Aman",
+        "number": "01719139"
+    },
+    {
+        "id": 6,
+        "name": "Mahbub Hasan",
+        "number": "01719129"
+    },
+    {
+        "id": 7,
+        "name": "Hasan",
+        "number": "017191239"
+    },
+    {
+        "id": 8,
+        "name": "Rubel",
+        "number": "719121739"
+    },
+    {
+        "id": 9,
+        "name": "Santo",
+        "number": "0719121739"
+    },
+    {
+        "id": 10,
+        "name": "Asad",
+        "number": "0179121739"
+    },
+    {
+        "id": 11,
+        "name": "Moyen",
+        "number": "0171912739"
     }
 ]
 
@@ -47,6 +82,13 @@ app.get('/api/persons/:id', (request, response) => {
         response.status(404).end()
     }
    
+})
+
+app.delete('/api/persons/:id', (request, response) => {
+    const id = Number(request.params.id)
+    persons = persons.filter(person => person.id !== id)
+
+    response.status(204).end()
 })
 
 const PORT = 3001
