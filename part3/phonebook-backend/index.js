@@ -1,9 +1,12 @@
 const express = require('express')
 const app = express()
+const morgan = require('morgan')
+
 
 // middleware
 app.use(express.json())
 app.use(express.urlencoded())
+app.use(morgan('tiny'))
 
 let persons = [
     {
@@ -113,7 +116,7 @@ app.post('/api/persons', (request, response) => {
 
     // Checking if person is already exist
     const alreadyExist = persons.some(person => person.name === body.name)
-    
+
     if (alreadyExist) {
         return response.status(400).json({
             error: "name must be unique"
