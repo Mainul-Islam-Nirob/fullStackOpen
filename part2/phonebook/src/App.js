@@ -104,7 +104,16 @@ const App = () => {
                 // clear input fields
                 setNewName('')
                 setNewNumber('')
-            })        
+            })  
+            .catch(err => {
+                // console.log(err.response.data)
+                setNotification({
+                    error: `${err.response.data.error}`
+                })
+                setTimeout(() => {
+                    setNotification(null)
+                }, 5000)
+            })      
     }
     
  
@@ -143,9 +152,7 @@ const App = () => {
                 message={notification?.success || notification?.error} 
                 className={notification?.success ? "success" : notification?.error ? "error" : null}
             />
-    {
-                console.log(notification?.success ? "success" : "error")
-    }
+    
             <InputField label="Filter shown with:" 
              value={filter} 
              onChange={handleFilterChange}
