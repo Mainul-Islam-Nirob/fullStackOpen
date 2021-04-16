@@ -2,8 +2,8 @@ POST  http://localhost:3001/api/blogs
 Content-Type: application/json
 
 {
-    "title": "renamed blogs to blog",
-    "author": "renamed blogs to blog",
-    "url": "/renamed blogs to blog",
+    "title": "middleware",
+    "author": "middleware",
+    "url": "/middleware",
     "likes": 3
 }
