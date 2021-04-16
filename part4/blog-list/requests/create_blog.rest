@@ -2,8 +2,8 @@ POST  http://localhost:3001/api/blogs
 Content-Type: application/json
 
 {
-    "title": "Router",
-    "author": "Router",
-    "url": "/Router",
+    "title": "renamed blogs to blog",
+    "author": "renamed blogs to blog",
+    "url": "/renamed blogs to blog",
     "likes": 3
 }
