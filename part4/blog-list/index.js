@@ -4,7 +4,7 @@ const cors = require('cors')
 const mongoose = require('mongoose')
 const config = require('./utils/config')
 const logger = require('./utils/logger')
-const Blog = require("./models/blogs")
+const blogsRouter = require("./controllers/blogs")
 
 mongoose
     .connect(config.MONGODB_URI, { 
@@ -19,29 +19,10 @@ mongoose
         logger.error("Error connecting to db", err.message)
     })
 
-// Because our server is in localhost port 3001, and our frontend in localhost port 3000, they do not have the same origin.take the middleware to use and allow for requests from all origins
+
 app.use(cors())
-
-// In order to access the data easily, we need the help of the express json - parser
 app.use(express.json())
-
-app.get('/api/blogs', (request, response) => {
-    Blog
-        .find({})
-        .then(blogs => {
-            response.json(blogs)
-        })
-})
-
-app.post('/api/blogs', (request, response) => {
-    const blog = new Blog(request.body)
-
-    blog
-        .save()
-        .then(result => {
-            response.status(201).json(result)
-        })
-})
+app.use("/api/blogs", blogsRouter)
 
 
 app.listen(config.PORT, () => {
