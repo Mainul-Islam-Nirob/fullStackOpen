@@ -2,8 +2,8 @@ POST  http://localhost:3001/api/blogs
 Content-Type: application/json
 
 {
-    "title": "middleware",
-    "author": "middleware",
-    "url": "/middleware",
+    "title": "app.js",
+    "author": "app.js",
+    "url": "/app.js",
     "likes": 3
 }
