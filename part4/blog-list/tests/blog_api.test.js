@@ -14,7 +14,7 @@ beforeEach(async () => {
 
     blogObject = new Blog(helper.initialBlogs[1])
     await blogObject.save()
-},10000)
+}, 20000)
 
 test('blogs are returned as json', async () => {
     await api
@@ -77,6 +77,17 @@ test('if like property is missing from req, it will default to the value 0', asy
 
 })
 
+test('blog without title or url is not added', async () => {
+    const newBlog = {
+        likes: 12,
+    }
+
+    await api.post('/api/blogs').send(newBlog).expect(400)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+})
 
 
 afterAll(() => {
