@@ -116,3 +116,9 @@ describe('favorite blog', () => {
         })
     })
 })
+
+//4.6*: helper functions and unit tests, step4
+//*************** */ Have to add test for mostBlogs Author***************
+
+//4.7*: helper functions and unit tests, step5
+//mostLikes test
