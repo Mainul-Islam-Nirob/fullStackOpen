@@ -9,7 +9,7 @@ const Blog = require('../models/blog')
 beforeEach(async () => {
     await Blog.deleteMany({})
     await Blog.insertMany(helper.initialBlogs)
-}, 10000)
+})
 
 describe('when there are some blogs save initially', () => {
 test('blogs are returned as json', async () => {
@@ -106,6 +106,29 @@ describe('deletion of a blog', () => {
         const titles = blogsAtEnd.map(b => b.title)
 
         expect(titles).not.toContain(blogToDelete.title)
+    })
+})
+
+describe('updating of likes of blog', () => {
+    test('succeeds update with status 200 if id is valid', async () => {
+        const blogsAtStart = await helper.blogsInDb()
+
+        console.log({ blogsAtStart })
+        const blogToUpdate = blogsAtStart[0]
+        console.log(blogToUpdate)
+        
+        await api
+            .put(`/api/blogs/${blogToUpdate.id}`)
+            .send({ likes: 12 })
+            .expect(200)
+
+        const blogsAtEnd = await helper.blogsInDb()
+
+        const updatedBlog = blogsAtEnd[0]
+
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+
+        expect(updatedBlog.likes).toBe(12)
     })
 })
 
