@@ -8,14 +8,10 @@ const Blog = require('../models/blog')
 
 beforeEach(async () => {
     await Blog.deleteMany({})
+    await Blog.insertMany(helper.initialBlogs)
+}, 10000)
 
-    let blogObject = new Blog(helper.initialBlogs[0])
-    await blogObject.save()
-
-    blogObject = new Blog(helper.initialBlogs[1])
-    await blogObject.save()
-}, 20000)
-
+describe('when there are some blogs save initially', () => {
 test('blogs are returned as json', async () => {
     await api
         .get('/api/blogs')
@@ -33,8 +29,10 @@ test('blogs should contain id property (not _id)', async () => {
     const response = await api.get('/api/blogs')
 
     expect(response.body[0].id).toBeDefined()
+  })
 })
 
+describe('addition of new blog', () => {
 test('a valid blog can be added', async () => {
     const newBlog = {
         title: 'New blog by M',
@@ -87,6 +85,28 @@ test('blog without title or url is not added', async () => {
     const blogsAtEnd = await helper.blogsInDb()
 
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+})
+})
+
+describe('deletion of a blog', () => {
+    test('succeeds deletion with status code 204 if id is valid', async () => {
+        const blogsAtStart = await helper.blogsInDb()
+        const blogToDelete = blogsAtStart[0]
+
+        await api
+            .delete(`/api/blogs/${blogToDelete.id}`)
+            .expect(204)
+
+        const blogsAtEnd = await helper.blogsInDb()
+
+        expect(blogsAtEnd).toHaveLength(
+            helper.initialBlogs.length - 1
+        )
+
+        const titles = blogsAtEnd.map(b => b.title)
+
+        expect(titles).not.toContain(blogToDelete.title)
+    })
 })
 
 
