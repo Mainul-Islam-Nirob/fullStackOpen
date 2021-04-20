@@ -53,7 +53,29 @@ test('blogs should contain id property (not _id)', async () => {
     expect(response.body[0].id).toBeDefined()
 })
 
+test('a valid blog can be added', async () => {
+    const newBlog = {
+        title: 'New blog by M',
+        author: 'Mainul',
+        url: 'http://mainul.com',
+    }
 
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+
+    const response = await api.get('/api/blogs')
+
+    const contents = response.body.map(b => b.title)
+
+    expect(response.body).toHaveLength(initialBlogs.length + 1)
+    expect(contents).toContain(
+        'New blog by M'
+    )
+
+})
 
 
 
