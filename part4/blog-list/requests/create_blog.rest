@@ -1,6 +1,8 @@
-POST  http://localhost:3001/api/blogs
+POST  http://localhost:3001/api/users
 Content-Type: application/json
 
 {
-    "likes": 3
+ "username": "Mainul Final",
+  "name": "Mainul Islam Final",
+  "password": "m"
 }
