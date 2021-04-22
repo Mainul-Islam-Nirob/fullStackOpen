@@ -1,8 +1,10 @@
-POST  http://localhost:3001/api/users
+POST http://localhost:3001/api/blogs/
 Content-Type: application/json
 
-{
- "username": "",
-  "name": "Nirob",
-  "password": "ss"
+{  
+    "title": "New Unique User next NEXT",
+    "author": "author",
+    "url": "http://dummy.com",
+    "likes": 2,
+    "userId": "60813a7de4012f46ecaf646e"
 }
