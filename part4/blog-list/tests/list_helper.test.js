@@ -117,8 +117,25 @@ describe('favorite blog', () => {
   })
 })
 
-//4.6*: helper functions and unit tests, step4
-//*************** */ Have to add test for mostBlogs Author***************
+describe('returns author with largest amount of blogs', () => {
+  test('when list has no blog equals null', () => {
+    const result = listHelper.mostBlogs(noBlogs)
+    expect(result).toBe(null)
+  })
 
-//4.7*: helper functions and unit tests, step5
-//mostLikes test
+  test('when list has only one blog equals the author of that', () => {
+    const result = listHelper.mostBlogs(listWithOneBlog)
+    expect(result).toEqual({
+      author: 'Edsger W. Dijkstra',
+      blogs: 1,
+    })
+  })
+
+  test('when list has many blogs equals the right author', () => {
+    const result = listHelper.mostBlogs(blogs)
+    expect(result).toEqual({
+      author: 'Robert C. Martin',
+      blogs: 3,
+    })
+  })
+})

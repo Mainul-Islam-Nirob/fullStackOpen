@@ -34,45 +34,40 @@ const favoriteBlog = (blogs) => {
 }
 
 
-//************************** */
-//4.6*: helper functions and unit tests, step4
 
-// const mostBlogs = (blogs) => {
-//     // Get all blog authors
-//     const authors = blogs.map((blog) => blog.author)
-//     logger.info(authors)
+const mostBlogs = (blogs) => {
+  // Get all blog authors
+  const authors = blogs.map((blog) => blog.author)
+  logger.info(authors)
 
-//     if (!authors || authors.length === 0) {
-//         return null
-//     }
+  if (!authors || authors.length === 0) {
+    return null
+  }
 
-//     // Count blogs by author
-//     const countBlogsByAuthor = authors.reduce((acc, curr) => {
-//         acc[curr] ? acc[curr]++ : (acc[curr] = 1)
+  // Count blogs by author
+  const countBlogsByAuthor = authors.reduce((acc, curr) => {
+    acc[curr] ? acc[curr]++ : (acc[curr] = 1)
 
-//         return acc
-//     }, {})
+    return acc
+  }, {})
 
 
-// // Return array with name of author with most blogs and amount of blogs.
-// const authorWithMostBlogsArray = Object.entries(
-//     countBlogsByAuthor,
-// ).reduce((a, b) => (countBlogsByAuthor[a] > countBlogsByAuthor[b] ? a : b))
+  // Return array with name of author with most blogs and amount of blogs.
+  const authorWithMostBlogsArray = Object.entries(
+    countBlogsByAuthor,
+  ).reduce((a, b) => (countBlogsByAuthor[a] > countBlogsByAuthor[b] ? a : b))
 
-// const authorWithMostBlogs = {
-//     author: authorWithMostBlogsArray[0],
-//     blogs: authorWithMostBlogsArray[1],
-// }
-//     return authorWithMostBlogs
-// }
-
-//************************** */
-//4.7*: helper functions and unit tests, step5
-//mostLikes test
+  const authorWithMostBlogs = {
+    author: authorWithMostBlogsArray[0],
+    blogs: authorWithMostBlogsArray[1],
+  }
+  return authorWithMostBlogs
+}
 
 
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
+  mostBlogs
 }
