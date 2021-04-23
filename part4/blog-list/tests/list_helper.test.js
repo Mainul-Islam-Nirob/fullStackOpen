@@ -139,3 +139,26 @@ describe('returns author with largest amount of blogs', () => {
     })
   })
 })
+
+describe('returns author with largest amount of likes', () => {
+  test('when list has no blog equals null', () => {
+    const result = listHelper.mostLikes(noBlogs)
+    expect(result).toBe(null)
+  })
+
+  test('when list has only one blog equals the author of that', () => {
+    const result = listHelper.mostLikes(listWithOneBlog)
+    expect(result).toEqual({
+      author: 'Edsger W. Dijkstra',
+      likes: 5,
+    })
+  })
+
+  test('when list has many blogs equals the right author', () => {
+    const result = listHelper.mostLikes(blogs)
+    expect(result).toEqual({
+      author: 'Edsger W. Dijkstra',
+      likes: 17,
+    })
+  })
+})
