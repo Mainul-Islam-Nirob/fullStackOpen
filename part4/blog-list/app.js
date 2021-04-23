@@ -24,7 +24,6 @@ mongoose
     logger.error('Error connecting to db', err.message)
   })
 
-
 app.use(cors())
 app.use(express.json())
 app.use(middleware.tokenExtractor)
