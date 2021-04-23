@@ -1,11 +1,11 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ld3VuIiwiaWQiOiI2MDgyOTU1YjBkNmI1ODNmZGNiMTI4ZjEiLCJpYXQiOjE2MTkxNzA2ODZ9.AGiF4fqJHcRcKE8U3ous_lGonqPWvfDN9SnjwhvscMM
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ld3VuIiwiaWQiOiI2MDgyOTU1YjBkNmI1ODNmZGNiMTI4ZjEiLCJpYXQiOjE2MTkxNzgwMzksImV4cCI6MTYxOTE4MTYzOX0.FKzhpQIJkIfjMEvUVnCR5GcU1qZrIwzEFZk8XIcylcg
 
 {  
-    "title": "userExtractor 15",
+    "title": "userExtractor 25",
     "author": "author",
     "url": "http://dummy.com",
-    "likes": 2,
+    "likes": 200,
     "userId": "6082955b0d6b583fdcb128f1"
 }
