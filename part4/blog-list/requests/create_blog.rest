@@ -1,9 +1,9 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5pcm9iIiwiaWQiOiI2MDgxYzgxMThjOGM0ZTQzMTQ1ZjA5MTEiLCJpYXQiOjE2MTkxMTgxMTh9.4e2fu3oZIUgKdctpfmHgTjdBQI179Xjj5PfgLoHY9xY
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5pcm9iIiwiaWQiOiI2MDgxYzgxMThjOGM0ZTQzMTQ1ZjA5MTEiLCJpYXQiOjE2MTkxNTI5NzF9.hhJqvcSLEmwh67ip9DBb-frN0fPrwE6ddLnVd9ncssk
 
 {  
-    "title": "Valid user's post",
+    "title": "Valid user's post next day post",
     "author": "author",
     "url": "http://dummy.com",
     "likes": 2,
