@@ -4,6 +4,7 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
+import BlogForm from './components/BlogForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -16,6 +17,7 @@ const App = () => {
     url: ''
   })
   const [notification, setNotification] = useState(null)
+  const [createBlogVisible, setCreateBlogVisible] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -42,36 +44,33 @@ const App = () => {
       setTimeout(() => {
         setNotification(null)
       }, 5000)
-    }
-    
-    try {
-    const user = await loginService.login({
-      username, password,
-    })
+    }else {
+      try {
+        const user = await loginService.login({
+          username, password,
+        })
 
-    window.localStorage.setItem(
-      'loggedBlogappUser', JSON.stringify(user)
-    )
+        window.localStorage.setItem(
+          'loggedBlogappUser', JSON.stringify(user)
+        )
 
-    blogService.setToken(user.token)
-    setUser(user)
-    setUsername('')
-    setPassword('')
-    
-    } catch (error) {
-      setNotification({
-        error: 'Wrong username or password'
-      })
+        blogService.setToken(user.token)
+        setUser(user)
+        setUsername('')
+        setPassword('')
 
-      setTimeout(() => {
-        setNotification(null)
-      }, 5000)
+      } catch (error) {
+        setNotification({
+          error: 'Wrong username or password'
+        })
 
-    }
-  }
- // remove braces  
-    
-  
+        setTimeout(() => {
+          setNotification(null)
+        }, 5000)
+
+      }
+    } 
+  }  
 
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogappUser')
@@ -120,6 +119,7 @@ const App = () => {
             setNotification(null)
           }, 5000)
 
+          setCreateBlogVisible(null)
           setInputValue({
             title: '',
             author: '',
@@ -165,44 +165,34 @@ const App = () => {
       </form>
     </div>
   )
+// Blog Form function
+  const blogForm = () => {
+    const hideWhenVisible = { display: createBlogVisible ? 'none' : '' }
+    const showWhenVisible = { display: createBlogVisible ? '' : 'none' }
+
+    return (
+      <div>
+        <div style={hideWhenVisible}>
+          <button onClick={() => setCreateBlogVisible(true)}>CreateBlog</button>
+        </div>
+        <div style={showWhenVisible}>
+          <BlogForm
+            inputValue={inputValue}
+            handleInputChange={handleInputChange}
+            createBlog={createBlog}
+          />
+          <button onClick={() => setCreateBlogVisible(false)}>cancel</button>
+        </div>
+      </div>
+    )
+  }
 
   const blogs_list = () => (
     <div>
      <h1>blogs</h1>
       <span>{user.name} logged in </span>
       <button onClick={handleLogout} type="button">LogOut</button><br/><br/>
-
-      <form onSubmit={createBlog}>
-        <div>
-          Title: 
-            <input
-            type="text"
-            value={inputValue.title}
-            name="title"
-            onChange={handleInputChange}
-          />
-        </div>
-        <div>
-          Author:
-            <input
-            type="text"
-            value={inputValue.author}
-            name="author"
-            onChange={handleInputChange}
-          />
-        </div>
-        <div>
-          URL:
-            <input
-            type="text"
-            value={inputValue.url}
-            name="url"
-            onChange={handleInputChange}
-          />
-        </div>
-        <button type="submit">create</button>
-      </form><br/><br/>
-
+      {blogForm()}
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
