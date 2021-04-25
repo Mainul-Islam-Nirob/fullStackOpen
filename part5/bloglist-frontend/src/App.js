@@ -1,23 +1,20 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import "./index.css"
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
 import BlogForm from './components/BlogForm'
+import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [inputValue, setInputValue] = useState({
-    title: '',
-    author: '',
-    url: ''
-  })
   const [notification, setNotification] = useState(null)
-  const [createBlogVisible, setCreateBlogVisible] = useState(null)
+  
+  const blogFormRef = useRef()
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -77,27 +74,8 @@ const App = () => {
     setUser(null)
   }
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target
-
-    setInputValue((prevValue) => {
-      return {
-        ...prevValue,
-        [name] : value,
-      }
-    })
-  }
-
   //Creating New Blog
-  const createBlog = (event) => {
-    event.preventDefault()
-    
-    const blogObject = {
-      title: inputValue.title,
-      author: inputValue.author,
-      url: inputValue.url,
-    }
-
+  const addBlog = (blogObject) => {
     //validation
     if (!blogObject.title || !blogObject.author || !blogObject.url) {
        setNotification({
@@ -107,6 +85,7 @@ const App = () => {
         setNotification(null)
       }, 5000)
     }else {
+      blogFormRef.current.toggleVisibility()
       blogService
         .create(blogObject)
         .then(returendBlog => {
@@ -119,12 +98,7 @@ const App = () => {
             setNotification(null)
           }, 5000)
 
-          setCreateBlogVisible(null)
-          setInputValue({
-            title: '',
-            author: '',
-            url: ''
-          })
+          // setCreateBlogVisible(null)
         })
         .catch(err => {
           console.log("error of server", err)
@@ -165,27 +139,16 @@ const App = () => {
       </form>
     </div>
   )
-// Blog Form function
-  const blogForm = () => {
-    const hideWhenVisible = { display: createBlogVisible ? 'none' : '' }
-    const showWhenVisible = { display: createBlogVisible ? '' : 'none' }
 
-    return (
-      <div>
-        <div style={hideWhenVisible}>
-          <button onClick={() => setCreateBlogVisible(true)}>CreateBlog</button>
-        </div>
-        <div style={showWhenVisible}>
-          <BlogForm
-            inputValue={inputValue}
-            handleInputChange={handleInputChange}
-            createBlog={createBlog}
-          />
-          <button onClick={() => setCreateBlogVisible(false)}>cancel</button>
-        </div>
-      </div>
-    )
-  }
+ const blogForm = () => (
+
+    <Togglable buttonLabel='Create Blog' ref={blogFormRef}>
+      <BlogForm
+        createBlog={addBlog}
+      />
+    </Togglable>
+
+  )
 
   const blogs_list = () => (
     <div>
@@ -198,6 +161,7 @@ const App = () => {
       )}
     </div>
   )
+
   return (
     <>
       <Notification
@@ -211,5 +175,5 @@ const App = () => {
     </>
   )
  }
-//remove a bracet
+
 export default App
