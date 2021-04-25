@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
+import "./index.css"
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import Notification from './components/Notification'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -13,6 +15,7 @@ const App = () => {
     author: '',
     url: ''
   })
+  const [notification, setNotification] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -31,6 +34,15 @@ const App = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
+
+    if (!username || username === '' || !password || password === '') {
+      setNotification({
+        error: 'Please fill in username and password'
+      })
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+    }
     
     try {
     const user = await loginService.login({
@@ -46,10 +58,21 @@ const App = () => {
     setUsername('')
     setPassword('')
     
-    } catch (e) {
-      console.log(e)
+    } catch (error) {
+      setNotification({
+        error: 'Wrong username or password'
+      })
+
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+
     }
   }
+ // remove braces  
+    
+  
+
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogappUser')
     setUser(null)
@@ -69,26 +92,52 @@ const App = () => {
   //Creating New Blog
   const createBlog = (event) => {
     event.preventDefault()
-  
+    
     const blogObject = {
       title: inputValue.title,
       author: inputValue.author,
       url: inputValue.url,
     }
 
-    blogService
-      .create(blogObject)
+    //validation
+    if (!blogObject.title || !blogObject.author || !blogObject.url) {
+       setNotification({
+        error: 'Please fill in all fields'
+      })
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+    }else {
+      blogService
+        .create(blogObject)
         .then(returendBlog => {
           setBlogs(blogs.concat(returendBlog))
+
+          setNotification({
+            success: `a new blog ${returendBlog.title} added by ${returendBlog.author}`
+          })
+          setTimeout(() => {
+            setNotification(null)
+          }, 5000)
+
           setInputValue({
             title: '',
             author: '',
             url: ''
           })
-        }
-     )
+        })
+        .catch(err => {
+          console.log("error of server", err)
+          setNotification({
+            error: `${err}`
+          })
+          setTimeout(() => {
+            setNotification(null)
+          }, 5000)
+        })
+    }
+  
   }
-
 
   const loginForm = () => (
     <div>
@@ -159,15 +208,18 @@ const App = () => {
       )}
     </div>
   )
-
   return (
     <>
+      <Notification
+        message={notification?.success || notification?.error}
+        className={notification?.success ? "success" : notification?.error ? "error" : null}
+      />
       { user === null ?
         loginForm() :
         blogs_list()
       }
     </>
   )
-}
-
+ }
+//remove a bracet
 export default App
