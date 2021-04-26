@@ -113,6 +113,40 @@ const App = () => {
   
   }
 
+  
+  const addLike = async (id, blogObject) => {
+    try {
+      // Add like to blog and store it in db
+      await blogService.update(id, blogObject)
+
+      const updatedBlog = {
+        ...blogObject,
+        id,
+      }
+
+      // Update blogs in state
+      setBlogs(blogs.map((blog) => (blog.id !== id ? blog : updatedBlog)))
+    } catch (err) {
+      console.error(err)
+      setNotification({
+        error: `No nooo! ${err}`,
+      })
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
   const loginForm = () => (
     <div>
       <h1>Log in to Application</h1>
@@ -157,7 +191,7 @@ const App = () => {
       <button onClick={handleLogout} type="button">LogOut</button><br/><br/>
       {blogForm()}
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} updateLike={addLike} />
       )}
     </div>
   )

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Button from './Button'
 
-const Blog = ({blog}) => {
+const Blog = ({blog, updateLike}) => {
   const [expanded, setExpanded] = useState(false)
 
   //css
@@ -19,6 +19,20 @@ const Blog = ({blog}) => {
     setExpanded(!expanded)
   }
   
+  const update = () => {
+    const { id, author, url, title } = blog
+    const updatedBlog = {
+      user: blog.user,
+      likes: blog.likes + 1,
+      title,
+      author,
+      url,
+    }
+   
+    updateLike(id, updatedBlog)
+  }
+
+
   return(
     <div style = {blogStyle}>
       {blog.title} --{blog.author} 
@@ -27,23 +41,23 @@ const Blog = ({blog}) => {
         style={hideWhenVisible}
         type="button"
       >
-        View
+        show
       </Button>
       <Button
         onClick={toggleExpanded}
         style={showWhenVisible}
         type="button"
       >
-        Hide
+        hide
       </Button>
       <div style={showWhenVisible}>
       <div>
         <span>{blog.url}</span>
       </div>
-      <span>Likes</span>
+      <span>Likes : </span>
       <span>{blog.likes}</span>
-      <Button>
-        Like
+      <Button onClick={update} type='button'>
+         like
         </Button>
       <div>
         <span> {blog.user.name}</span>
