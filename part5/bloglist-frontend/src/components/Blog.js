@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Button from './Button'
 
-const Blog = ({blog, updateLike, removeBlog, user}) => {
+const Blog = ({ blog, updateLike, removeBlog, user }) => {
   const [expanded, setExpanded] = useState(false)
 
   //css
@@ -18,7 +18,7 @@ const Blog = ({blog, updateLike, removeBlog, user}) => {
   const toggleExpanded = () => {
     setExpanded(!expanded)
   }
-  
+
   const update = () => {
     const { id, author, url, title } = blog
     const updatedBlog = {
@@ -28,7 +28,7 @@ const Blog = ({blog, updateLike, removeBlog, user}) => {
       author,
       url,
     }
-   
+
     updateLike(id, updatedBlog)
   }
 
@@ -41,7 +41,7 @@ const Blog = ({blog, updateLike, removeBlog, user}) => {
 
   return(
     <div style = {blogStyle}>
-      {blog.title} --{blog.author} 
+      {blog.title} --{blog.author}
       <Button
         onClick={toggleExpanded}
         style={hideWhenVisible}
@@ -57,25 +57,25 @@ const Blog = ({blog, updateLike, removeBlog, user}) => {
         hide
       </Button>
       <div style={showWhenVisible}>
-      <div>
-        <span>{blog.url}</span>
-      </div>
-      <span>Likes : </span>
-      <span>{blog.likes}</span>
-      <Button onClick={update} type='button'>
+        <div>
+          <span>{blog.url}</span>
+        </div>
+        <span>Likes : </span>
+        <span>{blog.likes}</span>
+        <Button onClick={update} type='button'>
          like
         </Button>
-      <div>
-        <span> {blog.user.name}</span>
-      </div>
+        <div>
+          <span> {blog.user.name}</span>
+        </div>
         {(blog.user.username === user.username) && (
-            <Button onClick={deleteBlog}>
+          <Button onClick={deleteBlog}>
               Remove
-            </Button>
-          )}
+          </Button>
+        )}
+      </div>
     </div>
-    </div>
-  ) 
+  )
 }
 
 export default Blog

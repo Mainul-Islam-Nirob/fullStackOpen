@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import "./index.css"
+import './index.css'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -13,13 +13,12 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [notification, setNotification] = useState(null)
-  
   const blogFormRef = useRef()
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -66,8 +65,8 @@ const App = () => {
         }, 5000)
 
       }
-    } 
-  }  
+    }
+  }
 
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogappUser')
@@ -78,7 +77,7 @@ const App = () => {
   const addBlog = (blogObject) => {
     //validation
     if (!blogObject.title || !blogObject.author || !blogObject.url) {
-       setNotification({
+      setNotification({
         error: 'Please fill in all fields'
       })
       setTimeout(() => {
@@ -101,7 +100,7 @@ const App = () => {
           // setCreateBlogVisible(null)
         })
         .catch(err => {
-          console.log("error of server", err)
+          console.log('error of server', err)
           setNotification({
             error: `${err}`
           })
@@ -110,10 +109,8 @@ const App = () => {
           }, 5000)
         })
     }
-  
   }
 
-  
   const addLike = async (id, blogObject) => {
     try {
       // Add like to blog and store it in db
@@ -165,7 +162,7 @@ const App = () => {
       <form onSubmit={handleLogin}>
         <div>
           username
-            <input
+          <input
             type="text"
             value={username}
             name="Username"
@@ -174,7 +171,7 @@ const App = () => {
         </div>
         <div>
           password
-            <input
+          <input
             type="password"
             value={password}
             name="Password"
@@ -186,8 +183,7 @@ const App = () => {
     </div>
   )
 
- const blogForm = () => (
-
+  const blogForm = () => (
     <Togglable buttonLabel='Create Blog' ref={blogFormRef}>
       <BlogForm
         createBlog={addBlog}
@@ -198,15 +194,15 @@ const App = () => {
 
   const blogs_list = () => (
     <div>
-     <h1>blogs</h1>
+      <h1>blogs</h1>
       <span>{user.name} logged in </span>
       <button onClick={handleLogout} type="button">LogOut</button><br/><br/>
       {blogForm()}
       {blogs
         .sort((a, b) => b.likes -a.likes)
         .map(blog =>
-        <Blog key={blog.id} blog={blog} updateLike={addLike} removeBlog={deleteBlog} user={user} />
-      )}
+          <Blog key={blog.id} blog={blog} updateLike={addLike} removeBlog={deleteBlog} user={user} />
+        )}
     </div>
   )
 
@@ -214,7 +210,7 @@ const App = () => {
     <>
       <Notification
         message={notification?.success || notification?.error}
-        className={notification?.success ? "success" : notification?.error ? "error" : null}
+        className={notification?.success ? 'success' : notification?.error ? 'error' : null}
       />
       { user === null ?
         loginForm() :
@@ -222,6 +218,6 @@ const App = () => {
       }
     </>
   )
- }
+}
 
 export default App
