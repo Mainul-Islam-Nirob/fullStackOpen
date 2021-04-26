@@ -137,6 +137,28 @@ const App = () => {
     }
   }
 
+  const deleteBlog = async (id) => {
+    try {
+      const blog = blogs.filter((blog) => blog.id === id)
+
+      if (window.confirm(`Remove ${blog[0].title} by ${blog[0].author}`)) {
+        // delete blog from db
+        await blogService.deleteBlog(id)
+
+        // update state to reflect deletion in UI
+        setBlogs(blogs.filter((blog) => blog.id !== id))
+      }
+    } catch (err) {
+      console.error(err)
+      setNotification({
+        error: `No nooo! ${err}`,
+      })
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+    }
+  }
+
   const loginForm = () => (
     <div>
       <h1>Log in to Application</h1>
@@ -183,7 +205,7 @@ const App = () => {
       {blogs
         .sort((a, b) => b.likes -a.likes)
         .map(blog =>
-        <Blog key={blog.id} blog={blog} updateLike={addLike} />
+        <Blog key={blog.id} blog={blog} updateLike={addLike} removeBlog={deleteBlog} user={user} />
       )}
     </div>
   )

@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import Button from './Button'
 
-const Blog = ({blog, updateLike}) => {
-  const [expanded, setExpanded] = useState(false)
+const Blog = ({blog, updateLike, removeBlog, user}) => {
+  const [expanded, setExpanded] = useState(true)
 
   //css
   const hideWhenVisible = { display: expanded ? 'none' : '' }
@@ -30,6 +30,12 @@ const Blog = ({blog, updateLike}) => {
     }
    
     updateLike(id, updatedBlog)
+  }
+
+  const deleteBlog = () => {
+    const { id } = blog
+
+    removeBlog(id)
   }
 
 
@@ -62,6 +68,19 @@ const Blog = ({blog, updateLike}) => {
       <div>
         <span> {blog.user.name}</span>
       </div>
+      {/* {
+        user.id === blog.user.id ?
+          <div>
+            <Button type="button" onClick={deleteBlog}>remove</Button>
+          </div>
+          : " "
+
+      } */}
+        {(blog.user.username === user.username) && (
+            <Button onClick={deleteBlog}>
+              Remove
+            </Button>
+          )}
     </div>
     </div>
   ) 
