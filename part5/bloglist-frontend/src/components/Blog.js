@@ -40,7 +40,7 @@ const Blog = ({ blog, updateLike, removeBlog, user }) => {
 
 
   return(
-    <div style = {blogStyle}>
+    <div style = {blogStyle} className='blog'>
       {blog.title} --{blog.author}
       <Button
         onClick={toggleExpanded}
@@ -56,7 +56,8 @@ const Blog = ({ blog, updateLike, removeBlog, user }) => {
       >
         hide
       </Button>
-      <div style={showWhenVisible}>
+
+      <div style={showWhenVisible} data-testid='hidden-content'>
         <div>
           <span>{blog.url}</span>
         </div>
