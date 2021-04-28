@@ -8,6 +8,13 @@ describe('Blog app', function () {
       password: 'nirob',
     }
     cy.request('POST', 'http://localhost:3003/api/users/', user)
+    const anotheruser = {
+      name: 'Mainul Islam',
+      username: 'mainul',
+      password: 'mainul',
+    }
+    cy.request('POST', 'http://localhost:3003/api/users/', anotheruser)
+
     cy.visit('http://localhost:3000')
   })
 
@@ -69,6 +76,33 @@ describe('Blog app', function () {
         cy.get('.likes').should('contain', 1)
       })
 
+      it('A user who created the blog can delete it', function () {
+        cy.contains('show').click()
+        cy.contains('Cypress creating a new blog')
+        cy.contains('Remove').click()
+        cy.contains('Cypress creating a new blog').should('not.exist')
+      })
+    })
+
+    describe('When another user logs in', function () {
+      beforeEach(function () {
+        cy.login({ username: 'nirob', password: 'nirob' })
+        cy.createBlog({
+          title: 'Blog created by nirob',
+          author: 'nirob',
+          url: 'http://only-nirob-can-delete.com',
+        })
+      })
+      it("user can't delete blog created by another user", function () {
+        cy.contains('Blog created by nirob')
+        cy.contains('Remove')
+        cy.contains('LogOut').click()
+        cy.login({ username: 'mainul', password: 'mainul' })
+        cy.contains('Blog created by nirob')
+        cy.contains('show').click()
+        cy.contains('Nirob Chowdhury')
+        cy.contains('Remove').should('not.exist')
+      })
     })
   })
 })
