@@ -37,4 +37,38 @@ describe('Blog app', function () {
       cy.get('html').should('not.contain', 'Nirob Chowdhur logged in')
     })
   })
+
+  describe('When logged in', function () {
+    beforeEach(function () {
+      cy.login({ username: 'nirob', password: 'nirob' })
+    })
+
+    it('A blog can be created', function () {
+      cy.contains('Create Blog').click()
+      cy.get('input[name="title"]').type('A new blog created by Cypress')
+      cy.get('input[name="author"]').type('Cypress')
+      cy.get('input[name="url"]').type('https://docs.cypress.io/')
+      cy.get('button[type="submit"]').click()
+
+      cy.contains('A new blog created by Cypress')
+    })
+
+    describe('and when a blog exists', function () {
+      beforeEach(function () {
+        cy.createBlog({
+          title: 'Cypress creating a new blog',
+          author: 'Cypress',
+          url: 'https://www.cypress.io/',
+        })
+      })
+
+      it('A user can like a blog', function () {
+        cy.contains('show').click()
+        cy.get('.likes').should('contain', 0)
+        cy.get('.likeBtn').click()
+        cy.get('.likes').should('contain', 1)
+      })
+
+    })
+  })
 })
