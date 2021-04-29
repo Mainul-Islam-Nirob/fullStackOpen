@@ -104,5 +104,52 @@ describe('Blog app', function () {
         cy.contains('Remove').should('not.exist')
       })
     })
+    // sort by like
+
+    describe('and when multiple blogs exists', function () {
+      beforeEach(function () {
+        cy.createBlog({
+          title: 'Cypress creating a new blog',
+          author: 'Cypress',
+          url: 'https://www.cypress.io/',
+          likes: 15,
+        })
+        cy.createBlog({
+          title: 'Second blog created',
+          author: 'Cypress',
+          url: 'https://www.cypress.io/',
+          likes: 0,
+        })
+        cy.createBlog({
+          title: 'Third blog created',
+          author: 'Cypress',
+          url: 'https://www.cypress.io/',
+          likes: 2,
+        })
+      })
+
+      it('Blogs are ordered based on number of likes, in descending order (from most likes till least likes)', function () {
+        cy.get('.blog').then(($blog) => {
+          expect($blog).to.have.length(3)
+
+          for (let i = 0; i < $blog.length; i++) {
+            // Check if the number of likes of current blog is higher than or equal to that of next blog
+            if (i < $blog.length - 1) {
+              expect(
+                Number($blog.find('.likes')[i].innerText),
+              ).to.be.least(
+                Number($blog.find('.likes')[i + 1].innerText),
+              )
+              // Check if number of likes of last blog is lower than or equal to that of first blog
+            } else {
+              expect(
+                Number($blog.find('.likes')[i].innerText),
+              ).to.be.most(Number($blog.find('.likes')[0].innerText))
+            }
+          }
+        })
+      })
+    })
+
   })
 })
