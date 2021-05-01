@@ -1,16 +1,27 @@
-
 import React from 'react'
+import { useSelector } from 'react-redux'
 
 const Notification = () => {
+  const notification = useSelector((state) => state.notification.message)
   const style = {
-    border: 'solid',
-    padding: 10,
-    borderWidth: 1
+    margin: '10px',
+    padding: '10px',
+    backgroundColor: 'gray',
+    color: 'white',
+    border: '1px solid green',
+    borderRadius: '100px'
+
   }
   return (
-    <div style={style}>
-      render here notification...
-    </div>
+    <>
+    {
+      notification !== "" && (
+      <div style={style}>
+        {notification}
+      </div>
+      )
+    }
+    </>
   )
 }
 
