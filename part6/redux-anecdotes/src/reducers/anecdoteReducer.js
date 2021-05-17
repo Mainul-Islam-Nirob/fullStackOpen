@@ -24,15 +24,6 @@ const anecdoteReducer = (state = [], action) => {
   }
 }
 
-// export const initializeAnecdotes = (anecdotes) => {
-//   return {
-//     type: 'INIT_ANECDOTES',
-//     data: anecdotes
-    
-//   }
-// }
-
-//using redux thunk
 
 export const initializeAnecdotes = () => {
   return async dispatch => {
@@ -44,21 +35,31 @@ export const initializeAnecdotes = () => {
   }
 }
 
-export const voteAnecdote = (id) => {
-  return {
-    type: 'VOTE',
-    data: {
-      id
+// export const voteAnecdote = (id) => {
+//   return {
+//     type: 'VOTE',
+//     data: {
+//       id
+//     }
+//   }
+// }
+
+export const voteAnecdote = (votedAnecdote) => {
+  return async (dispatch) => {
+    const anecdote = {
+      ...votedAnecdote,
+      votes: votedAnecdote.votes + 1,
     }
+
+    const updatedAnecdote = await anecdoteService.update(anecdote)
+    const { id } = updatedAnecdote
+    dispatch({
+      type: "VOTE",
+      data: { id },
+    })
   }
 }
 
-// export const createAnecdote = (content) => {
-//   return {
-//     type: 'NEW_ANECDOTE',
-//     data: content
-//   }
-// }
 export const createAnecdote = content => {
   return async dispatch => {
     const newAnecdote = await anecdoteService.createNew(content)
