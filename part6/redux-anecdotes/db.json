@@ -47,13 +47,18 @@
     },
     {
       "content": "testing notification",
-      "votes": 0,
+      "votes": 1,
       "id": "okgxFwB"
     },
     {
       "content": "testing notification again",
-      "votes": 0,
+      "votes": 1,
       "id": "7mG6ZBE"
+    },
+    {
+      "content": "create an anecdote",
+      "votes": 1,
+      "id": "sIrEOvO"
     }
   ]
 }
