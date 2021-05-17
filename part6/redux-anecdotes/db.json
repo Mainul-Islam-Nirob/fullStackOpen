@@ -3,17 +3,17 @@
     {
       "content": "If it hurts, do it more often",
       "id": "47145",
-      "votes": 55
+      "votes": 111
     },
     {
       "content": "Adding manpower to a late software project makes it later!",
       "id": "21149",
-      "votes": 28
+      "votes": 56
     },
     {
       "content": "The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.",
       "id": "69581",
-      "votes": 4
+      "votes": 12
     },
     {
       "content": "Any fool can write code that a computer can understand. Good programmers write code that humans can understand.",
@@ -23,7 +23,7 @@
     {
       "content": "Premature optimization is the root of all evil.",
       "id": "25170",
-      "votes": 3
+      "votes": 4
     },
     {
       "content": "Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.",
@@ -36,39 +36,9 @@
       "votes": 4
     },
     {
-      "content": "Try to understand the Err0r Message first",
-      "votes": 5,
-      "id": "Qhaq7oT"
-    },
-    {
-      "content": "Try to understand the Err0r Message first",
-      "votes": 3,
-      "id": "SnyBuC6"
-    },
-    {
-      "content": "Try to understand the Err0r Message first",
-      "votes": 5,
-      "id": "PXAdO6U"
-    },
-    {
-      "content": "new",
-      "votes": 3,
-      "id": "ry2i0dt"
-    },
-    {
-      "content": "another anecdote",
-      "votes": 3,
-      "id": "zRLz8bu"
-    },
-    {
-      "content": "New anecdotes",
-      "votes": 3,
-      "id": "CRdPOwZ"
-    },
-    {
-      "content": "Asynchronus action creators",
-      "votes": 4,
-      "id": "U7azp5O"
+      "content": "testing notification",
+      "votes": 0,
+      "id": "5MSh5P5"
     }
   ]
 }

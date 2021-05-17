@@ -35,14 +35,6 @@ export const initializeAnecdotes = () => {
   }
 }
 
-// export const voteAnecdote = (id) => {
-//   return {
-//     type: 'VOTE',
-//     data: {
-//       id
-//     }
-//   }
-// }
 
 export const voteAnecdote = (votedAnecdote) => {
   return async (dispatch) => {
