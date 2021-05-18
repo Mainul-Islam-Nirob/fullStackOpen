@@ -9,12 +9,7 @@ const AnecdoteForm = ({createAnecdote, setNotificationMessage}) => {
         const content = event.target.anecdote.value
         event.target.anecdote.value = ''
         createAnecdote(content)
-        setNotificationMessage(
-            {
-                message: `Successfully added "${content}"`
-            }, 10)
-        }
-
+        setNotificationMessage(`Successfully added "${content}"`, 5)}
     return (
         <>
         < h2 > create new</h2 >

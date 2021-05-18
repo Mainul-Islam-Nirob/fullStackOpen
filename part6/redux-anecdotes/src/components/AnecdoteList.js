@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { voteAnecdote } from '../reducers/anecdoteReducer'
-import { setNotificationMessage, clearNotification } from '../reducers/notificatinReducer'
+import { setNotificationMessage } from '../reducers/notificatinReducer'
 
 const AnecdoteList = () => {
     const anecdotes = useSelector((state) =>{
@@ -19,12 +19,7 @@ const AnecdoteList = () => {
     const vote = (votedAnecdote) => {
         dispatch(voteAnecdote(votedAnecdote));
         dispatch(
-            setNotificationMessage(
-                {
-                    message: `You voted "${votedAnecdote.content}"`
-                }, 10)
-        )
-    }
+            setNotificationMessage(`You voted "${votedAnecdote.content}"`, 5))}
 
     return (
         <>
