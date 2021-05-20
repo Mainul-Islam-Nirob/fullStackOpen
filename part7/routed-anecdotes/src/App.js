@@ -8,7 +8,6 @@ import Anecdote from './components/Anecdote'
 import About from './components/About'
 import Footer from './components/Footer'
 import CreateNew from './components/CreateNew'
-import Notification from './components/Notification'
 
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
@@ -62,7 +61,6 @@ const App = () => {
     <div>
       <h1>Software anecdotes</h1>
       <Menu />
-        <Notification message={notification} />
       <Switch>
         <Route path='/anecdotes/:id'>
           <Anecdote anecdote={anecdote} />
@@ -74,7 +72,7 @@ const App = () => {
           <CreateNew addNew={addNew} />
         </Route>
         <Route path='/'>
-          <AnecdoteList anecdotes={anecdotes} />
+          <AnecdoteList anecdotes={anecdotes} notification={notification} />
         </Route>
       </Switch>
       <Footer />
