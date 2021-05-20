@@ -18,23 +18,30 @@ const CreateNew = (props) => {
         history.push('/')
     }
 
+    const resetInputFields = () => {
+        content.reset()
+        author.reset()
+        info.reset()
+    }
+
     return (
         <div>
             <h2>create a new anecdote</h2>
             <form onSubmit={handleSubmit}>
                 <div>
                     content
-                    <input name ="content" {...content} />
+                    <input {...content} />
                 </div>
                 <div>
                     author
-                    <input name="author" {...author} />
+                    <input {...author} />
                 </div>
                 <div>
                     url for more info
-                    <input name="info" {...info} />
+                    <input {...info} />
                 </div>
-                <button>create</button>
+                <button type="submit">create</button>
+                <button type="button" onClick={resetInputFields}>reset</button>
             </form>
         </div>
     )
