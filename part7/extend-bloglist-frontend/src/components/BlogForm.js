@@ -21,17 +21,20 @@ const BlogForm = ({ createBlog }) => {
 
   const addBlog = (event) => {
     event.preventDefault()
+    try{
+      createBlog({
+        title: inputValue.title,
+        author: inputValue.author,
+        url: inputValue.url,
+      })
 
-    createBlog({
-      title: inputValue.title,
-      author: inputValue.author,
-      url: inputValue.url,
-    })
-
-    setInputValue({
-      title: '',
-      author: '',
-      url: '' })
+      setInputValue({
+        title: '',
+        author: '',
+        url: '' })
+    }catch (err) {
+      console.log(err)
+    }
   }
 
   return (
