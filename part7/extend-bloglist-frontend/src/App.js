@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { Switch, Route } from 'react-router-dom'
 
 import './index.css'
 import Blog from './components/Blog'
@@ -8,6 +9,7 @@ import loginService from './services/login'
 import Notification from './components/Notification'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
+import UsersPage from './components/UsersPage'
 import { setNotification } from './reducers/notificationReducer'
 import { initializeBlogs } from './reducers/blogReducer'
 import { createBlog, removeBlog, likeBlog } from './reducers/blogReducer'
@@ -201,9 +203,8 @@ const App = () => {
 
   const blogs_list = () => (
     <div>
-      <h1>blogs</h1>
       <span>{user.name} logged in </span>
-      <button onClick={handleLogout} type="button">LogOut</button><br/><br/>
+      <button onClick={handleLogout} type="button">LogOut</button><br /><br />
       {blogForm()}
       {blogs
         .sort((a, b) => b.likes -a.likes)
@@ -217,14 +218,26 @@ const App = () => {
         )}
     </div>
   )
-
+  // if (!user) {
+  //   return null
+  // }
   return (
     <>
       <Notification/>
-      { user === null ?
-        loginForm() :
-        blogs_list()
-      }
+      <h1>Blogs</h1>
+      {/* <span>{user.name} logged in </span>
+      <button onClick={handleLogout} type="button">LogOut</button><br /><br /> */}
+      <Switch>
+        <Route path='/users'>
+          <UsersPage />
+        </Route>
+        <Route path='/'>
+          {user === null ?
+            loginForm() :
+            blogs_list()
+          }
+        </Route>
+      </Switch>
     </>
   )
 }
