@@ -35,7 +35,7 @@ const Blog = ({ blog, updateLike, removeBlog, user }) => {
   const deleteBlog = () => {
     const { id } = blog
 
-    removeBlog(id)
+    removeBlog(id, blog)
   }
 
 

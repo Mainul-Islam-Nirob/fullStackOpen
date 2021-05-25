@@ -10,7 +10,7 @@ import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 import { setNotification } from './reducers/notificationReducer'
 import { initializeBlogs } from './reducers/blogReducer'
-import { createBlog } from './reducers/blogReducer'
+import { createBlog, removeBlog, likeBlog } from './reducers/blogReducer'
 
 const App = () => {
   const blogs = useSelector((state) => state.blogs)
@@ -125,54 +125,42 @@ const App = () => {
     }
   }
 
-  // const addLike = async (id, blogObject) => {
-  //   try {
-  //     // Add like to blog and store it in db
-  //     await blogService.update(id, blogObject)
+  const addLike = async (id, updatedBlog) => {
+    try {
+      dispatch(likeBlog(id, updatedBlog))
+    } catch (err) {
+      console.error(err)
+      dispatch(
+        setNotification(
+          {
+            error: `No nooo! ${err}`,
+          },
+          5,
+        ),
+      )
+    }
+  }
 
-  //     const updatedBlog = {
-  //       ...blogObject,
-  //       id,
-  //     }
-
-  //     // Update blogs in state
-  //     setBlogs(blogs.map((blog) => (blog.id !== id ? blog : updatedBlog)))
-  //   } catch (err) {
-  //     console.error(err)
-  //     dispatch(
-  //       setNotification(
-  //         {
-  //           error: `No nooo! ${err}`,
-  //         },
-  //         5,
-  //       ),
-  //     )
-  //   }
-  // }
-
-  // const deleteBlog = async (id) => {
-  //   try {
-  //     const blog = blogs.filter((blog) => blog.id === id)
-
-  //     if (window.confirm(`Remove ${blog[0].title} by ${blog[0].author}`)) {
-  //       // delete blog from db
-  //       await blogService.deleteBlog(id)
-  //       // update state to reflect deletion in UI
-  //       setBlogs(blogs.filter((blog) => blog.id !== id))
-  //       dispatch(
-  //         setNotification(
-  //           {
-  //             notification: `Successfully removed ${blog[0].title} by ${blog[0].author}`,
-  //           },
-  //           5,
-  //         ),
-  //       )
-  //     }
-  //   } catch (err) {
-  //     console.error(err)
-  //     dispatch(setNotification({ error: `No nooo! ${err}` }, 5))
-  //   }
-  // }
+  const deleteBlog = async (id, blog) => {
+    console.log(blog)
+    try {
+      if (window.confirm(`Remove ${blog.title} by ${blog.author}`)) {
+        // delete blog from db
+        dispatch(removeBlog(id))
+        dispatch(
+          setNotification(
+            {
+              notification: `Successfully removed ${blog.title} by ${blog.author}`,
+            },
+            5,
+          ),
+        )
+      }
+    } catch (err) {
+      console.error(err)
+      dispatch(setNotification({ error: `No nooo! ${err}` }, 5))
+    }
+  }
 
   const loginForm = () => (
     <div>
@@ -222,8 +210,8 @@ const App = () => {
           <Blog
             key={blog.id}
             blog={blog}
-            // updateLike={addLike}
-            // removeBlog={deleteBlog}
+            updateLike={addLike}
+            removeBlog={deleteBlog}
             user={user} />
         )}
     </div>
