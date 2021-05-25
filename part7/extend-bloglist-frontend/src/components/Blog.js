@@ -1,82 +1,33 @@
-import React, { useState } from 'react'
-import Button from './Button'
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 
-const Blog = ({ blog, updateLike, removeBlog, user }) => {
-  const [expanded, setExpanded] = useState(false)
-
-  //css
-  const hideWhenVisible = { display: expanded ? 'none' : '' }
-  const showWhenVisible = { display: expanded ? '' : 'none' }
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5
-  }
-
-  const toggleExpanded = () => {
-    setExpanded(!expanded)
-  }
-
-  const update = () => {
-    const { id, author, url, title } = blog
-    const updatedBlog = {
-      user: blog.user,
-      likes: blog.likes + 1,
-      title,
-      author,
-      url,
-    }
-
-    updateLike(id, updatedBlog)
-  }
-
-  const deleteBlog = () => {
-    const { id } = blog
-
-    removeBlog(id, blog)
-  }
-
-
-  return(
-    <div style = {blogStyle} className='blog'>
-      {blog.title} --{blog.author}
-      <Button
-        onClick={toggleExpanded}
-        style={hideWhenVisible}
-        type="button"
+const blogStyle = {
+  paddingTop: 10,
+  paddingLeft: 2,
+  border: 'solid',
+  borderWidth: 1,
+  marginBottom: 5
+}
+const Blog = ({ blog }) => {
+  return (
+    <div style={ blogStyle }>
+      <Link
+        to={`/blogs/${blog.id}`}
       >
-        show
-      </Button>
-      <Button
-        onClick={toggleExpanded}
-        style={showWhenVisible}
-        type="button"
-      >
-        hide
-      </Button>
-
-      <div style={showWhenVisible} data-testid='hidden-content'>
-        <div>
-          <span>{blog.url}</span>
-        </div>
-        <span>Likes : </span>
-        <span className='likes'>{blog.likes}</span>
-        <Button className='likeBtn' onClick={update} type='button'>
-         like
-        </Button>
-        <div>
-          <span> {blog.user.name}</span>
-        </div>
-        {(blog.user.username === user.username) && (
-          <Button onClick={deleteBlog}>
-              Remove
-          </Button>
-        )}
-      </div>
+        {blog.title} --{blog.author}
+      </Link>
     </div>
   )
 }
 
 export default Blog
+
+Blog.propTypes = {
+  blog: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    author: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    likes: PropTypes.number,
+  }),
+}

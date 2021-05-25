@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import styles from './UsersPage.module.css'
 import { Link } from 'react-router-dom'
 
-const UsersPage = ({user}) => {
+const UsersPage = () => {
     const users = useSelector((state) => state.users)
 
     return (
