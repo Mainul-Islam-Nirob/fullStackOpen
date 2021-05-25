@@ -33,3 +33,13 @@
   list-style: none;
   line-height: 1.5;
 }
+
+.users__link {
+  text-decoration: none;
+  color: #a3c3c7;
+}
+
+.users__link:hover {
+  color: #16d3d8;
+  font-weight: 500;
+}
