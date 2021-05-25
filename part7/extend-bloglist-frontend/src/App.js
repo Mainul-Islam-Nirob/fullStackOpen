@@ -11,20 +11,21 @@ import Togglable from './components/Togglable'
 import { setNotification } from './reducers/notificationReducer'
 import { initializeBlogs } from './reducers/blogReducer'
 import { createBlog, removeBlog, likeBlog } from './reducers/blogReducer'
+import { initializeUsers } from './reducers/userReducer'
 
 const App = () => {
   const blogs = useSelector((state) => state.blogs)
   const dispatch = useDispatch()
 
-  // const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-
+  console.log('login user state',user)
   const blogFormRef = useRef()
 
   useEffect(() => {
     dispatch(initializeBlogs())
+    dispatch(initializeUsers())
   }, [dispatch])
 
   useEffect(() => {
