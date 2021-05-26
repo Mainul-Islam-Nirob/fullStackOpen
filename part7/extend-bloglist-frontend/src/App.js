@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Switch, Route, Redirect } from 'react-router-dom'
-import './index.css'
+import { Switch, Route, Redirect, Link } from 'react-router-dom'
+import './App.css'
 import blogService from './services/blogs'
 import UsersPage from './components/UsersPage'
 import User from './components/User'
@@ -12,12 +12,9 @@ import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUsers } from './reducers/userReducer'
 import Navbar from './components/Navbar'
 
-import Container from '@material-ui/core/Container'
-
 const App = () => {
-  const dispatch = useDispatch()
-  // const history = useHistory()
 
+  const dispatch = useDispatch()
   useEffect(() => {
     dispatch(initializeBlogs())
     dispatch(initializeUsers())
@@ -41,39 +38,43 @@ const App = () => {
   }, [user])
 
   return (
-    <Container>
+    <>
       <Navbar />
-      {
-        user ? <h1>Blog App</h1> : ''
-      }
-      <Switch>
-        <Route path='/users/:id'>
-          {
-            user ? <User /> : <Redirect to='/login' />
-          }
-        </Route>
-        <Route path="/blogs/:id">
-          {
-            user ? <BlogView /> : <Redirect to='/login' />
-          }
-        </Route>
-        <Route path='/users' exact>
-          {
-            user ? <UsersPage /> : <Redirect to='/login' />
-          }
-        </Route>
-        <Route path='/login' exact>
-          {
-            user ? <HomePage /> : <LoginPage/>
-          }
-        </Route>
-        <Route path='/'>
-          {
-            user ? <HomePage /> : <Redirect to='/login' />
-          }
-        </Route>
-      </Switch>
-    </Container>
+      <main>
+        <div className="app__container">
+          <Link to="/" className="app__logo">
+            Blog app
+          </Link>
+          <Switch>
+            <Route path='/users/:id'>
+              {
+                user ? <User /> : <Redirect to='/login' />
+              }
+            </Route>
+            <Route path="/blogs/:id">
+              {
+                user ? <BlogView /> : <Redirect to='/login' />
+              }
+            </Route>
+            <Route path='/users' exact>
+              {
+                user ? <UsersPage /> : <Redirect to='/login' />
+              }
+            </Route>
+            <Route path='/login' exact>
+              {
+                user ? <HomePage /> : <LoginPage/>
+              }
+            </Route>
+            <Route path='/'>
+              {
+                user ? <HomePage /> : <Redirect to='/login' />
+              }
+            </Route>
+          </Switch>
+        </div>
+      </main>
+    </>
   )
 }
 

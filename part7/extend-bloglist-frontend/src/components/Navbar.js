@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import ButtonCom from './ButtonCom'
+import Button from './Button'
 import { logout } from '../reducers/loginReducer'
 import { NavLink, useHistory } from 'react-router-dom'
 import styles from './Navbar.module.css'
@@ -23,6 +23,7 @@ const Navbar = () => {
         <ul className={styles.navList}>
           <li className={styles.navItem}>
             <NavLink
+              activeClassName={styles.activeLink}
               className={styles.navLink}
               to={'/blogs'}
             >
@@ -31,6 +32,7 @@ const Navbar = () => {
           </li>
           <li>
             <NavLink
+              activeClassName={styles.activeLink}
               className={styles.navLink}
               to={'/users'}
             >
@@ -41,22 +43,33 @@ const Navbar = () => {
 
         <ul className={`${styles.navList} ${styles.navListSecondary}`}>
           <li className={styles.navItem}>
-            <span>{user?.name} logged in</span>
+            <span className={styles.user}>{user?.name} logged in</span>
           </li>
           <li>
-            <ButtonCom
+            <Button
               onClick={handleLogout}
               type='button'
+              className={styles.logoutBtn}
             >
               Logout
-            </ButtonCom>
+            </Button>
           </li>
         </ul>
       </nav>
     )
   }
   else {
-    return ''
+    return (
+      <nav className={styles.nav}>
+        <Button
+          onClick={handleLogout}
+          className={styles.logoutBtn}
+          type="button"
+        >
+          Login
+        </Button>
+      </nav>
+    )
   }
 }
 

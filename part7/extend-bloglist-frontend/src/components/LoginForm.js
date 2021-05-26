@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import InputField from './InputField'
-import ButtonCom from './ButtonCom'
+import Button from './Button'
+import styles from './LoginForm.module.css'
 
 const LoginForm = ({ handleLogin }) => {
   const [inputValue, setInputValue] = useState(null)
@@ -35,26 +36,26 @@ const LoginForm = ({ handleLogin }) => {
   }
 
   return (
-    <form onSubmit={login}>
-      <InputField
-        label="Username"
-        type="text"
-        name="username"
-        htmlFor="username"
-        value={inputValue?.username || ''}
-        onChange={handleInputChange}
-      />
-      <InputField
-        label="Password"
-        type="password"
-        name="password"
-        htmlFor="password"
-        value={inputValue?.password || ''}
-        onChange={handleInputChange}
-      />
-      <ButtonCom type="submit">
+    <form className={styles.LoginForm} onSubmit={login}>
+      <div className={styles.flex}>
+        <InputField
+          label="Username"
+          type="text"
+          name="username"
+          value={inputValue?.username || ''}
+          onChange={handleInputChange}
+        />
+        <InputField
+          label="Password"
+          type="password"
+          name="password"
+          value={inputValue?.password || ''}
+          onChange={handleInputChange}
+        />
+      </div><br/>
+      <Button className={styles.loginBtn} type="submit">
         Login
-      </ButtonCom>
+      </Button>
     </form>
   )
 }

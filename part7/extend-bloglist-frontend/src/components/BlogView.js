@@ -1,11 +1,13 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useRouteMatch, useHistory } from 'react-router-dom'
-import ButtonCom from './ButtonCom'
+import Button from './Button'
 import { likeBlog, removeBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
 import Comment from '../components/Comment'
 import CommentForm from './CommentForm'
+import styles from './BlogView.module.css'
+import { FaRegHeart } from 'react-icons/fa'
 
 const BlogView = () => {
   const blogs = useSelector((state) => state.blogs)
@@ -68,46 +70,44 @@ const BlogView = () => {
   }
   return (
     <>
-      <div>
-        <h1>{blog.title}</h1>
-        <div>{blog.author}</div>
-        <a>
+      <div className={styles.blogContainer}>
+        <h1 className={styles.title}>{blog.title}</h1>
+        <div className={styles.author}>{blog.author}</div>
+        <a className={styles.url} href={blog.url}>
           {blog.url}
         </a>
-        <div>
-          <span data-cy='likes'>
+        <div className={styles.infoContainer}>
+          <span data-cy="likes" className={styles.likes}>
             {blog.likes}
           </span>
-          <ButtonCom dataCy='like-btn' onClick={addLike} >
-            like
-          </ButtonCom>
-          <span> &#8226;</span>
-          <span>Added by </span>
-          <span>{blog.user?.name}</span>
+          <Button dataCy="like-btn" onClick={addLike} className={styles.btn}>
+            <FaRegHeart size={'0.9em'} className={styles.likeIcon} />
+          </Button>
+          <span className={styles.dot}> &#8226;</span>
+          <span className={styles.addedBy}>Added by </span>
+          <span className={styles.user}>{blog.user?.name}</span>
         </div>
         {blog.user?.username === user?.username && (
-          <ButtonCom
+          <Button
             onClick={() => deleteBlog(blog.id, blog)}
-            type='button'
+            className={styles.removeBtn}
+            type="button"
           >
             Remove
-          </ButtonCom>
+          </Button>
         )}
       </div>
-      <h2>Comments</h2>
-      <CommentForm />
-      {
-        blog.comments && blog.comments.length !== 0 ? (
-          <ul>
-            {
-              blog.comments.map((comment) => (
-                <Comment key={comment.id} comment={comment} />
-              ))
-            }
-          </ul>
-        ) : 'No comments for this post yet'
-      }
 
+      <h2 className={styles.commentTitle}>Comments</h2>
+      <CommentForm />
+      {blog.comments && blog.comments.length !== 0 ? (
+        <ul className={styles.commentList}>
+          {blog.comments.map((comment) => (
+            <Comment key={comment.id} comment={comment} />
+          ))}
+        </ul>
+      ) : ''
+      }
     </>
   )
 }

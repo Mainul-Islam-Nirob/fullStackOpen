@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import InputField from '../components/InputField'
-import ButtonCom from '../components/ButtonCom'
+import Button from '../components/Button'
+import styles from './BlogForm.module.css'
 
 const BlogForm = ({ createBlog }) => {
   const [inputValue, setInputValue] = useState({
@@ -69,9 +70,9 @@ const BlogForm = ({ createBlog }) => {
           name="url"
           onChange={handleInputChange}
           label="URL"
-        />
+        /><br/>
+        <Button className={styles.createBtn} type="submit">create</Button>
       </div>
-      <ButtonCom type="submit">create</ButtonCom>
     </form>)
 }
 

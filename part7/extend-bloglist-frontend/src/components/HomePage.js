@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
 import Blog from './Blog'
+import styles from './HomePage.module.css'
 
 const HomePage = () => {
   const blogs = useSelector((state) => state.blogs)
@@ -55,13 +56,12 @@ const HomePage = () => {
   return (
     <>
       <Notification />
-
-      <h1>Create New</h1>
+      <h1 className={styles.title}>Create New</h1>
       <Togglable buttonLabel="New Blog" ref={blogFormRef}>
         <BlogForm createBlog={addBlog} />
       </Togglable>
 
-      <div>
+      <div className={styles.blogs}>
         {blogs
           .sort((a, b) => b.likes - a.likes)
           .map((blog) => (

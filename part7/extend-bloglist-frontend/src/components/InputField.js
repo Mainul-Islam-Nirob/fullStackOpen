@@ -16,7 +16,6 @@ const InputField = ({ label, type, value, onChange, name }) => (
 export default InputField
 
 InputField.propTypes = {
-  htmlFor: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,

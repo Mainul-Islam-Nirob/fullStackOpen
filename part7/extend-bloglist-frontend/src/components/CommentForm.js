@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useRouteMatch } from 'react-router-dom'
 import { createComment } from '../reducers/blogReducer'
 import InputField from './InputField'
-import ButtonCom from './ButtonCom'
+import Button from './Button'
+import styles from './CommentForm.module.css'
 
 const CommentForm = () => {
   const [inputValue, setInputValue] = useState(null)
@@ -47,8 +48,8 @@ const CommentForm = () => {
     }
   }
   return (
-    <form onSubmit={addComment}>
-      <div>
+    <form className={styles.commentForm} onSubmit={addComment}>
+      <div className={styles.flex}>
         <InputField
           label="Comment"
           htmlFor="comment"
@@ -57,9 +58,12 @@ const CommentForm = () => {
           value={inputValue?.comment || ''}
           onChange={handleInputChange}
         />
-        <ButtonCom type="submit">
+      </div>
+      <div>
+        <br/>
+        <Button type="submit" className={styles.submitBtn}>
           Add comment
-        </ButtonCom>
+        </Button>
       </div>
     </form>
   )
