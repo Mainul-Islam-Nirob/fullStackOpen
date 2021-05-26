@@ -1,0 +1,7 @@
+POST http://localhost:3003/api/blogs/60ade9043bc69e19cc62b78b/comments 
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5pcm9iIiwiaWQiOiI2MDgxYzgxMThjOGM0ZTQzMTQ1ZjA5MTEiLCJpYXQiOjE2MjIwMTU5OTIsImV4cCI6MTYyMjAxOTU5Mn0.1coMvpfggaljxBigegXSrT5FFBgJwoJorzvkgbOdY9U
+
+{
+"title": "well done"
+}

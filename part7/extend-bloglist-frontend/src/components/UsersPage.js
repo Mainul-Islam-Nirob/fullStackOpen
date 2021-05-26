@@ -5,8 +5,7 @@ import styles from './UsersPage.module.css'
 import { Link } from 'react-router-dom'
 
 const UsersPage = () => {
-    const users = useSelector((state) => state.users)
-
+  const users = useSelector((state) => state.users)
     return (
         <>
             <h1 className={styles.users__title}>Users</h1>

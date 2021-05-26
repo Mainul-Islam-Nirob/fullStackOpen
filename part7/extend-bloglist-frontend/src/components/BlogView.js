@@ -4,6 +4,7 @@ import { useRouteMatch, useHistory } from 'react-router-dom'
 import Button from './Button'
 import { likeBlog, removeBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
+import Comment from '../components/Comment'
 
 const BlogView = () => {
   const blogs = useSelector((state) => state.blogs)
@@ -92,6 +93,19 @@ const BlogView = () => {
           </Button>
         )}
       </div>
+      <h2>Comments</h2>
+      {
+        blog.comments && blog.comments.length !== 0 ? (
+          <ul>
+            {
+              blog.comments.map((comment) => (
+                <Comment key={comment.id} comment={comment} />
+              ))
+            }
+          </ul>
+        ) : 'No comments for this post yet'
+      }
+
     </>
   )
 }
