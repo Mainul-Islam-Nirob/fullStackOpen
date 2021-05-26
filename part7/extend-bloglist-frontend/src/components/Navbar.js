@@ -59,17 +59,7 @@ const Navbar = () => {
     )
   }
   else {
-    return (
-      <nav className={styles.nav}>
-        <Button
-          onClick={handleLogout}
-          className={styles.logoutBtn}
-          type="button"
-        >
-          Login
-        </Button>
-      </nav>
-    )
+    return ''
   }
 }
 

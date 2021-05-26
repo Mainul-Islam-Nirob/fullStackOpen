@@ -11,6 +11,7 @@ import LoginPage from './components/LoginPage'
 import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUsers } from './reducers/userReducer'
 import Navbar from './components/Navbar'
+import Container from '@material-ui/core/Container'
 
 const App = () => {
 
@@ -39,41 +40,43 @@ const App = () => {
 
   return (
     <>
-      <Navbar />
-      <main>
-        <div className="app__container">
-          <Link to="/" className="app__logo">
-            Blog app
-          </Link>
-          <Switch>
-            <Route path='/users/:id'>
-              {
-                user ? <User /> : <Redirect to='/login' />
-              }
-            </Route>
-            <Route path="/blogs/:id">
-              {
-                user ? <BlogView /> : <Redirect to='/login' />
-              }
-            </Route>
-            <Route path='/users' exact>
-              {
-                user ? <UsersPage /> : <Redirect to='/login' />
-              }
-            </Route>
-            <Route path='/login' exact>
-              {
-                user ? <HomePage /> : <LoginPage/>
-              }
-            </Route>
-            <Route path='/'>
-              {
-                user ? <HomePage /> : <Redirect to='/login' />
-              }
-            </Route>
-          </Switch>
-        </div>
-      </main>
+      <Container>
+        <Navbar />
+        <main>
+          <div className="app__container">
+            <Link to="/" className="app__logo">
+              Blog app
+            </Link>
+            <Switch>
+              <Route path='/users/:id'>
+                {
+                  user ? <User /> : <Redirect to='/login' />
+                }
+              </Route>
+              <Route path="/blogs/:id">
+                {
+                  user ? <BlogView /> : <Redirect to='/login' />
+                }
+              </Route>
+              <Route path='/users' exact>
+                {
+                  user ? <UsersPage /> : <Redirect to='/login' />
+                }
+              </Route>
+              <Route path='/login' exact>
+                {
+                  user ? <HomePage /> : <LoginPage/>
+                }
+              </Route>
+              <Route path='/'>
+                {
+                  user ? <HomePage /> : <Redirect to='/login' />
+                }
+              </Route>
+            </Switch>
+          </div>
+        </main>
+      </Container>
     </>
   )
 }
