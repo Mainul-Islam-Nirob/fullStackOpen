@@ -230,6 +230,93 @@ describe('updating of likes of blog', () => {
   })
 })
 
+describe('addition of new comment', () => {
+  let token = null
+  beforeAll(async () => {
+    await User.deleteMany({})
+
+    const passwordHash = await bcrypt.hash('password', 10)
+    const user = new User({ username: 'jane', passwordHash })
+
+    await user.save()
+
+    // Login user to get token
+    await api
+      .post('/api/login')
+      .send({ username: 'jane', password: 'password' })
+      .then((res) => {
+        return (token = res.body.token)
+      })
+
+    return token
+  })
+
+  test('succeeds with status 201 if id is valid and title is given', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+
+    const blogToAddCommentTo = blogsAtStart[0]
+
+    await api
+      .post(`/api/blogs/${blogToAddCommentTo.id}/comments`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({ title: 'Comment' })
+      .expect(201)
+
+    const blogsAtEnd = await Blog.find({}).populate('comments')
+
+    const updatedBlog = blogsAtEnd[0]
+
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+
+    expect(updatedBlog.comments[0].title).toBe('Comment')
+  })
+
+  test('blog without title is not added', async () => {
+    const blogsAtStart = await Blog.find({}).populate('comments')
+
+    const blogToAddCommentTo = blogsAtStart[0]
+
+    await api
+      .post(`/api/blogs/${blogToAddCommentTo.id}/comments`)
+      .set('Authorization', `Bearer ${token}`)
+      .send('I am missing title property')
+      .expect(400)
+
+    const blogsAtEnd = await Blog.find({}).populate('comments')
+
+    const updatedBlog = blogsAtEnd[0]
+
+    expect(blogToAddCommentTo.comments).toHaveLength(
+      updatedBlog.comments.length,
+    )
+  })
+
+  test('unauthorized user cannot create a comment', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToAddCommentTo = blogsAtStart[0]
+
+    const newComment = {
+      title: 'New comment',
+    }
+
+    token = null
+
+    await api
+      .post(`/api/blogs/${blogToAddCommentTo.id}/comments`)
+      .set('Authorization', `Bearer ${token}`)
+      .send(newComment)
+      .expect(401)
+
+    const blogsAtEnd = await Blog.find({}).populate('comments')
+
+    const updatedBlog = blogsAtEnd[0]
+
+    expect(blogToAddCommentTo.comments).toHaveLength(
+      updatedBlog.comments.length,
+    )
+  })
+})
+
 
 afterAll(() => {
   mongoose.connection.close()
