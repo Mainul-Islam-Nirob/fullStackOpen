@@ -10,12 +10,11 @@ import HomePage from './components/HomePage'
 import LoginPage from './components/LoginPage'
 import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUsers } from './reducers/userReducer'
-import { logout } from './reducers/loginReducer'
-import { useHistory } from 'react-router-dom'
+import Navbar from './components/Navbar'
 
 const App = () => {
   const dispatch = useDispatch()
-  const history = useHistory()
+  // const history = useHistory()
 
   useEffect(() => {
     dispatch(initializeBlogs())
@@ -40,21 +39,11 @@ const App = () => {
     blogService.setToken(user?.token)
   }, [user])
 
-
-  const handleLogout = () => {
-    window.localStorage.removeItem('loggedInBloglistUser')
-    dispatch(logout())
-    history.push('/')
-  }
-
   return (
     <>
+      <Navbar />
       {
-        user ?
-          <div><h2>Blog App</h2>
-            <span>{user.name} logged in </span>
-            <button onClick={handleLogout} type="button">LogOut</button><br /><br /></div> :
-          ''
+        user ? <h1>Blog App</h1> : ''
       }
       <Switch>
         <Route path='/users/:id'>
