@@ -22,7 +22,6 @@ const App = () => {
   }, [dispatch])
 
   const user = useSelector((state) => state.login)
-  console.log('Token of users', user)
   // Check if user in localStorage
   useEffect(() => {
     const loggedInUserJSON = JSON.parse(

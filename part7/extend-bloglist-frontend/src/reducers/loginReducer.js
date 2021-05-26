@@ -7,8 +7,6 @@ const loggedInUserJSON = JSON.parse(
 const initialState = loggedInUserJSON ? loggedInUserJSON : null
 
 const loginReducer = (state = initialState, action) => {
-  console.log('state now: ', state)
-  console.log('action', action)
 
   switch (action.type) {
   case 'LOGIN':
@@ -24,8 +22,6 @@ const loginReducer = (state = initialState, action) => {
 export const login = (username, password) => {
   return async (dispatch) => {
     const user = await loginService.login({ username, password })
-    console.log({ user })
-    console.log('called')
     dispatch({
       type: 'LOGIN',
       data: user,

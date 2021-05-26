@@ -5,6 +5,7 @@ import Button from './Button'
 import { likeBlog, removeBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
 import Comment from '../components/Comment'
+import CommentForm from './CommentForm'
 
 const BlogView = () => {
   const blogs = useSelector((state) => state.blogs)
@@ -94,6 +95,7 @@ const BlogView = () => {
         )}
       </div>
       <h2>Comments</h2>
+      <CommentForm />
       {
         blog.comments && blog.comments.length !== 0 ? (
           <ul>
