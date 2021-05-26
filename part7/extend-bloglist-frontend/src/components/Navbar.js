@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import Button from './Button'
+import ButtonCom from './ButtonCom'
 import { logout } from '../reducers/loginReducer'
 import { NavLink, useHistory } from 'react-router-dom'
 import styles from './Navbar.module.css'
@@ -44,12 +44,12 @@ const Navbar = () => {
             <span>{user?.name} logged in</span>
           </li>
           <li>
-            <Button
+            <ButtonCom
               onClick={handleLogout}
               type='button'
             >
               Logout
-            </Button>
+            </ButtonCom>
           </li>
         </ul>
       </nav>

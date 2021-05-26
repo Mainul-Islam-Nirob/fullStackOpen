@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useRouteMatch } from 'react-router-dom'
 import { createComment } from '../reducers/blogReducer'
 import InputField from './InputField'
-import Button from './Button'
+import ButtonCom from './ButtonCom'
 
 const CommentForm = () => {
   const [inputValue, setInputValue] = useState(null)
@@ -57,9 +57,9 @@ const CommentForm = () => {
           value={inputValue?.comment || ''}
           onChange={handleInputChange}
         />
-        <Button type="submit">
+        <ButtonCom type="submit">
           Add comment
-        </Button>
+        </ButtonCom>
       </div>
     </form>
   )

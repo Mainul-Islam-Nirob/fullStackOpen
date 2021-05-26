@@ -12,6 +12,8 @@ import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUsers } from './reducers/userReducer'
 import Navbar from './components/Navbar'
 
+import Container from '@material-ui/core/Container'
+
 const App = () => {
   const dispatch = useDispatch()
   // const history = useHistory()
@@ -39,7 +41,7 @@ const App = () => {
   }, [user])
 
   return (
-    <>
+    <Container>
       <Navbar />
       {
         user ? <h1>Blog App</h1> : ''
@@ -71,7 +73,7 @@ const App = () => {
           }
         </Route>
       </Switch>
-    </>
+    </Container>
   )
 }
 

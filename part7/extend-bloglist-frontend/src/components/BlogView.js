@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useRouteMatch, useHistory } from 'react-router-dom'
-import Button from './Button'
+import ButtonCom from './ButtonCom'
 import { likeBlog, removeBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
 import Comment from '../components/Comment'
@@ -78,20 +78,20 @@ const BlogView = () => {
           <span data-cy='likes'>
             {blog.likes}
           </span>
-          <Button dataCy='like-btn' onClick={addLike} >
+          <ButtonCom dataCy='like-btn' onClick={addLike} >
             like
-          </Button>
+          </ButtonCom>
           <span> &#8226;</span>
           <span>Added by </span>
           <span>{blog.user?.name}</span>
         </div>
         {blog.user?.username === user?.username && (
-          <Button
+          <ButtonCom
             onClick={() => deleteBlog(blog.id, blog)}
             type='button'
           >
             Remove
-          </Button>
+          </ButtonCom>
         )}
       </div>
       <h2>Comments</h2>

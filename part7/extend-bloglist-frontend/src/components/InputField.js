@@ -1,15 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import TextField from '@material-ui/core/TextField'
 
-const InputField = ({ htmlFor, label, type, value, onChange, name }) => (
+const InputField = ({ label, type, value, onChange, name }) => (
   <div>
-    <label htmlFor={htmlFor}>
-      {label}
-    </label>
-    <input
+    <TextField id="standard-basic" label={label}
       type={type}
       name={name}
-      id={htmlFor}
       value={value}
       onChange={onChange}
     />

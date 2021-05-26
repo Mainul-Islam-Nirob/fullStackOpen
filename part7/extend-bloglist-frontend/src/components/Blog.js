@@ -1,23 +1,32 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Paper,
+} from '@material-ui/core'
 
-const blogStyle = {
-  paddingTop: 10,
-  paddingLeft: 2,
-  border: 'solid',
-  borderWidth: 1,
-  marginBottom: 5
-}
 const Blog = ({ blog }) => {
   return (
-    <div style={ blogStyle }>
-      <Link
-        to={`/blogs/${blog.id}`}
-      >
-        {blog.title} --{blog.author}
-      </Link>
-    </div>
+    <TableContainer component={Paper}>
+      <Table>
+        <TableBody>
+          <TableRow>
+            <TableCell>
+              <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+            </TableCell>
+            <TableCell align="right">
+              {blog.author}
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </TableContainer>
+
   )
 }
 

@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
+import InputField from '../components/InputField'
+import ButtonCom from '../components/ButtonCom'
 
 const BlogForm = ({ createBlog }) => {
   const [inputValue, setInputValue] = useState({
@@ -40,36 +42,36 @@ const BlogForm = ({ createBlog }) => {
   return (
     <form onSubmit={addBlog}>
       <div>
-            Title:
-        <input
+        <InputField
           id="title"
           type="text"
           value={inputValue.title}
           name="title"
           onChange={handleInputChange}
+          label="Title"
         />
       </div>
       <div>
-            Author:
-        <input
+        <InputField
           id="author"
           type="text"
           value={inputValue.author}
           name="author"
           onChange={handleInputChange}
+          label="Author"
         />
       </div>
       <div>
-            URL:
-        <input
+        <InputField
           id="url"
           type="text"
           value={inputValue.url}
           name="url"
           onChange={handleInputChange}
+          label="URL"
         />
       </div>
-      <button type="submit">create</button>
+      <ButtonCom type="submit">create</ButtonCom>
     </form>)
 }
 

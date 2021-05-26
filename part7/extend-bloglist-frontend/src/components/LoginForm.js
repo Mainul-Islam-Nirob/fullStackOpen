@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import InputField from './InputField'
-import Button from './Button'
+import ButtonCom from './ButtonCom'
 
 const LoginForm = ({ handleLogin }) => {
   const [inputValue, setInputValue] = useState(null)
@@ -52,9 +52,9 @@ const LoginForm = ({ handleLogin }) => {
         value={inputValue?.password || ''}
         onChange={handleInputChange}
       />
-      <Button type="submit">
+      <ButtonCom type="submit">
         Login
-      </Button>
+      </ButtonCom>
     </form>
   )
 }
