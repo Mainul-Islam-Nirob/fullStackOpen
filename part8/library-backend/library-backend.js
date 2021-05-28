@@ -137,12 +137,22 @@ const resolvers = {
     allAuthors: () => {
       const booksPerAuthor = authors.map((author) =>
         books.filter((book) => book.author === author.name)
-      );
+      )
+      //***********//
+      return booksPerAuthor.map((item) => {
+        let author = authors.find((author) => item[0].author === author.name);
+        if (author.born) {
+          author = {
+            bookCount: item.length,
+            name: item[0].author,
+            born: author.born,
+          }
+        } else {
+          author = { bookCount: item.length, name: item[0].author }
+        }
 
-      return booksPerAuthor.map((item) => ({
-        bookCount: item.length,
-        name: item[0].author,
-      }))
+        return author
+      })
     },
   },
 
