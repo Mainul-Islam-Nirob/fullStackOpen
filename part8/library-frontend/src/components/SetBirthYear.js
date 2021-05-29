@@ -1,12 +1,9 @@
 import React, { useState } from "react"
 import { useMutation } from "@apollo/client"
-// import Select from "react-select"
+import Select from "react-select"
 import { UPDATE_AUTHOR, ALL_AUTHORS } from "../queries"
-// import styles from "./SetBirthYear.module.css"
-// import Button from "./Button"
-// import Input from "./Input"
 
-const SetBirthYear = () => {
+const SetBirthYear = ({options}) => {
     const [name, setName] = useState("")
     let [setBornTo, setBorn] = useState("")
 
@@ -28,20 +25,11 @@ const SetBirthYear = () => {
         <div>
             <h2>Set birth year</h2>
             <form onSubmit={submit}>
-                {/* <Select
-                    className={styles.select}
+                <Select
                     placeholder="Select author..."
                     options={options}
                     onChange={({ label }) => setName(label)}
-                /> */}
-                <div>
-                    Name
-                    <input
-                        type="text"
-                        value={name}
-                        onChange={({ target }) => setName(target.value)}
-                    />
-                </div>
+                />
                 <div>
                   Born
                     <input

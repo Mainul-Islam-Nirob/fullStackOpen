@@ -6,7 +6,14 @@
 
 const Authors = (props) => {
   const { loading, error, data } = useQuery(ALL_AUTHORS)
-  
+
+  const options = data?.allAuthors?.map((option) => {
+    return {
+      value: option.name.toLowerCase(),
+      label: option.name,
+    }
+  })
+
   if (!props.show) {
     return null
   }
@@ -37,7 +44,7 @@ const Authors = (props) => {
           )}
         </tbody>
       </table>
-      <SetBirthYear />
+      <SetBirthYear options={options} />
     </div>
   )
 }
