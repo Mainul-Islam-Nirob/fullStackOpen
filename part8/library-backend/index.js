@@ -7,7 +7,7 @@ const Author = require('./models/authors')
 
 const uri = process.env.MONGODB_URI
 
-console.log('connecting to server')
+console.log('connecting to server...')
 
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
   .then(() => {
@@ -54,38 +54,54 @@ const resolvers = {
   Query: {
     bookCount: () => Book.collection.countDocuments(),
     authorCount: () => Author.collection.countDocuments(),
-    allBooks: (root, args) => {
+    allBooks: async (root, args) => {
       if (args.author && args.genre) {
-        return books.filter(
-          (book) =>
-            book.author === args.author && book.genres.includes(args.genre)
+      const author = await Author.findOne({ name: args.author })
+
+      const books = await Book.find({
+        $and: [
+          { author: { $in: author.id } },
+          { genres: { $in: args.genre } },
+        ],
+      }).populate("author")
+
+      return books
+      }else if (args.author) {
+        const author = await Author.findOne({ name: args.author })
+
+        const books = await Book.find({ author: { $in: author.id } }).populate(
+          "author"
         )
-      } else if (args.author) {
-        return books.filter((book) => book.author === args.author)
-      } else if (args.genre) {
-        return books.filter((book) => book.genres.includes(args.genre))
-      } else return Book.find({})
+        return books
+      }else if (args.genre) {
+        const books = await Book.find({ genres: { $in: args.genre } }).populate(
+          "author"
+        )
+        return books
+      }else {
+        return Book.find({}).populate("author")
+      }
     },
     
-    allAuthors: () => {
-      const booksPerAuthor = authors.map((author) =>
-        books.filter((book) => book.author === author.name)
-      )
-      //***********//
-      return booksPerAuthor.map((item) => {
-        let author = authors.find((author) => item[0].author === author.name);
-        if (author.born) {
-          author = {
-            bookCount: item.length,
-            name: item[0].author,
-            born: author.born,
-          }
-        } else {
-          author = { bookCount: item.length, name: item[0].author }
-        }
+    allAuthors: async () => {
+      const authors = await Author.find({})
 
-        return Author.find({})
+      let booksPerAuthor = authors.map(async (author) => {
+        const result = await Book.find({
+          author: { $in: author._id },
+        }).populate("author")
+
+        const authorObject = {
+          name: author.name,
+          born: author.born,
+          bookCount: result.length,
+        }
+        return authorObject
       })
+
+      booksPerAuthor = await Promise.all(booksPerAuthor)
+
+      return booksPerAuthor
     },
   },
 
@@ -120,12 +136,20 @@ const resolvers = {
       return book
     },
 
-    editAuthor: (root, args) => {
-      const author = authors.find((a) => a.name === args.name)
-      if (!author) return null;
-      const updatedAuthor = { ...author, born: args.setBornTo }
-      authors = authors.map((a) => (a.name === updatedAuthor.name ? updatedAuthor : a))
-      return updatedAuthor
+    editAuthor: async (root, args) => {
+      const author = await Author.findOne({ name: args.name })
+      if (!author) return null
+      
+      author.born = args.setBornTo
+
+      try {
+        await author.save();
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args,
+        })
+      }
+      return author
     },
   }
 }
