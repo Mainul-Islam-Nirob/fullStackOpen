@@ -4,7 +4,7 @@
  import SetBirthYear from "./SetBirthYear"
 
 
-const Authors = (props) => {
+const Authors = ({token, show}) => {
   const { loading, error, data } = useQuery(ALL_AUTHORS)
 
   const options = data?.allAuthors?.map((option) => {
@@ -14,7 +14,7 @@ const Authors = (props) => {
     }
   })
 
-  if (!props.show) {
+  if (!show) {
     return null
   }
 
@@ -44,7 +44,7 @@ const Authors = (props) => {
           )}
         </tbody>
       </table>
-      <SetBirthYear options={options} />
+      {token && <SetBirthYear options={options} />}
     </div>
   )
 }
