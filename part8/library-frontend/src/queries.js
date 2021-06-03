@@ -10,8 +10,8 @@ export const ALL_AUTHORS = gql`
   }
 `
 export const ALL_BOOKS = gql`
-  query {
-    allBooks {
+  query fetchBooks($filterByAuthor: String, $filterByGenre: String) {
+    allBooks(author: $filterByAuthor, genre: $filterByGenre) {
       title
       author{
         name
@@ -58,3 +58,12 @@ export const LOGIN = gql`
       value
     }
   }`
+
+export const ME = gql`
+  query {
+    me {
+      username
+      favoriteGenre
+    }
+  }
+`
