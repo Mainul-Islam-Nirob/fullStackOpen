@@ -1,6 +1,7 @@
 const { ApolloServer, gql, UserInputError, AuthenticationError } = require('apollo-server')
 require("dotenv").config()
-const { v1: uuid } = require("uuid")
+// const { v1: uuid } = require("uuid")
+const DataLoader = require("dataloader")
 const mongoose = require('mongoose')
 const jwt = require("jsonwebtoken")
 const { PubSub } = require('apollo-server')
@@ -13,6 +14,20 @@ const User = require('./models/user')
 const uri = process.env.MONGODB_URI
 const JWT_SECRET = process.env.SECRET
 
+const batchAuthors = async (keys) => {
+  const authors = await Author.find({
+    _id: {
+      $in: keys,
+    },
+  })
+
+  return keys.map(
+    (key) =>
+      authors.find((author) => author.id == key) ||
+      new Error(`No result for ${key}`)
+  )
+}
+
 console.log('connecting to server...')
 
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
@@ -23,11 +38,14 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true, useFind
     console.log('error connection to MongoDB:', error.message)
   })
 
+mongoose.set('debug', true)
+
 const typeDefs = gql`
   type Author {
     name: String!
     born: Int
     bookCount: Int!
+    id: ID!
   }
 
   type Book {
@@ -121,41 +139,45 @@ const resolvers = {
     allAuthors: async () => {
       const authors = await Author.find({})
 
-      let booksPerAuthor = authors.map(async (author) => {
-        const result = await Book.find({
-          author: { $in: author._id },
-        }).populate("author")
+      // let booksPerAuthor = authors.map(async (author) => {
+      //   const result = await Book.find({
+      //     author: { $in: author._id },
+      //   }).populate("author")
 
-        const authorObject = {
+      const authorsObject = authors.map((author) => {
+        return {
           name: author.name,
           born: author.born,
-          bookCount: result.length,
+          bookCount: author.books.length,
+          id: author.id,
         }
-        return authorObject
       })
 
-      booksPerAuthor = await Promise.all(booksPerAuthor)
+      // booksPerAuthor = await Promise.all(booksPerAuthor)
 
-      return booksPerAuthor
+      return authorsObject
     },
   },
 
   Book: {
-    author: async (root) => {
+    author: async (root, args, { loaders }) => {
       const id = root.author
 
-      const bookCount = await Book.find({ author: { $in: id } })
-        .populate("author")
-        .countDocuments()
+      // const bookCount = await Book.find({ author: { $in: id } })
+      //   .populate("author")
+      //   .countDocuments()
 
-      const author = await Author.findById(id)
+      // const author = await Author.findById(id)
 
-      if (!author) return
+      // if (!author) return
+
+      const author = await loaders.author.load(root.author._id)
 
       return {
         name: author.name,
         born: author.born,
-        bookCount,
+        bookCount: author.books.length,
+        id: root.author._id
       }
     },
   },
@@ -201,18 +223,26 @@ const resolvers = {
 
         if (author) {
           book = new Book({ ...args, author: author._id })
+          author.books = author.books.concat(book._id)
+
           await book.save()
+          await author.save()
         }
 
         if (!author) {
+          const _id = mongoose.Types.ObjectId()
+          book = new Book({ ...args, author: _id })
+
           author = new Author({
             name: args.author,
             born: null,
             bookCount: 1,
-            id: uuid(),
+            // id: uuid(),
+            _id,
+            books: [book._id],
           })
 
-          book = new Book({ ...args, author: author.id })
+          // book = new Book({ ...args, author: author.id })
           await author.save()
           await book.save()
         }
@@ -263,7 +293,17 @@ const server = new ApolloServer({
     if (auth && auth.toLowerCase().startsWith("bearer ")) {
       const decodedToken = jwt.verify(auth.substring(7), JWT_SECRET)
       const currentUser = await User.findById(decodedToken.id)
-      return { currentUser }
+      return {
+        currentUser,
+        loaders: {
+          author: new DataLoader((keys) => batchAuthors(keys)),
+    },
+  }
+}
+    return {
+      loaders: {
+        author: new DataLoader((keys) => batchAuthors(keys)),
+      },
     }
   },
 })
