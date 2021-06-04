@@ -2,7 +2,8 @@ import React, { useEffect } from "react"
 import { ALL_BOOKS } from "../queries"
 import { useQuery, useLazyQuery } from "@apollo/client"
 
-const Books = (props) => {
+const Books = ({ show }) => {
+  // const [genre, setGenre] = useState("")
   const { loading, error, data } = useQuery(ALL_BOOKS)
 
   const [getBooks, result] = useLazyQuery(ALL_BOOKS, {
@@ -22,7 +23,7 @@ const Books = (props) => {
     ? result?.data?.allBooks
     : data?.allBooks
 
-  if (!props.show) {
+  if (!show) {
     return null
   }
 
@@ -54,12 +55,13 @@ const Books = (props) => {
       </table>
       <div>
         {
-          genres.map((genre, i) => (
+          genres.map((g, i) => (
             <button key={i} onClick={() => {
+              // setGenre(g)
               getBooks({
-                variables: { filterByGenre: genre },
+                variables: { filterByGenre: g },
               })
-            }}>{genre}</button>
+            }}>{g}</button>
         ))
         }
       </div>
