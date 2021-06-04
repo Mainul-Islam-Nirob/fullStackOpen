@@ -1,20 +1,24 @@
-import React, { useState } from "react"
-// import Select from "react-select"
+import React, { useEffect } from "react"
 import { ALL_BOOKS } from "../queries"
-import { useQuery } from "@apollo/client"
+import { useQuery, useLazyQuery } from "@apollo/client"
 
 const Books = (props) => {
-  const [genre, setGenre] = useState("")
   const { loading, error, data } = useQuery(ALL_BOOKS)
+
+  const [getBooks, result] = useLazyQuery(ALL_BOOKS)
+
+  useEffect(() => {
+    getBooks()
+  }, []) //eslint-disable-line
 
    let genres = data?.allBooks?.flatMap((book) => book.genres)
 
   // remove duplicates
   genres = [...new Set(genres)]
 
-  const filteredBooks = data?.allBooks?.filter((book) =>
-    genre ? book.genres.includes(genre.toLowerCase()) : book
-  )
+  const books = result?.data?.allBooks
+    ? result?.data?.allBooks
+    : data?.allBooks
 
   if (!props.show) {
     return null
@@ -37,7 +41,7 @@ const Books = (props) => {
               published
             </th>
           </tr>
-          {filteredBooks.map((a, i) => (
+          {books.map((a, i) => (
             <tr key={a.title}>
               <td>{a.title}</td>
               <td>{a.author.name}</td>
@@ -49,7 +53,11 @@ const Books = (props) => {
       <div>
         {
           genres.map((genre, i) => (
-            <button key={i} onClick={() => setGenre(genre)}>{genre}</button>
+            <button key={i} onClick={() => {
+              getBooks({
+                variables: { filterByGenre: genre },
+              })
+            }}>{genre}</button>
         ))
         }
       </div>
