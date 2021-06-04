@@ -5,7 +5,9 @@ import { useQuery, useLazyQuery } from "@apollo/client"
 const Books = (props) => {
   const { loading, error, data } = useQuery(ALL_BOOKS)
 
-  const [getBooks, result] = useLazyQuery(ALL_BOOKS)
+  const [getBooks, result] = useLazyQuery(ALL_BOOKS, {
+    fetchPolicy: "network-only"
+  })
 
   useEffect(() => {
     getBooks()
