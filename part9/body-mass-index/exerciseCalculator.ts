@@ -35,7 +35,42 @@ const calculateExercises = (exerciseHours: number[], target: number): ExerciseHo
         target,
         average,
     };
-
 }
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2))
+interface ExerciseInputValues {
+    exerciseHours: number[];
+    target: number;
+}
+
+
+const parseExerciseArguments = (args: Array<string>): ExerciseInputValues => {
+    if (args.length < 4) throw new Error("Not enough arguments");
+
+    const exerciseValues = args.slice(2);
+
+    const notValid = exerciseValues.some((arg) => isNaN(Number(arg)));
+
+    const validArgs = exerciseValues.map((arg) =>
+        !isNaN(Number(arg)) ? Number(arg) : null
+    );
+
+    const target = validArgs.shift();
+
+    const exerciseHours = validArgs;
+
+    if (!notValid) {
+        return {
+            exerciseHours,
+            target,
+        };
+    } else {
+        throw new Error("Provided values were not numbers!");
+    }
+};
+
+try {
+    const { exerciseHours, target } = parseExerciseArguments(process.argv);
+    console.log(calculateExercises(exerciseHours, target));
+} catch (e) {
+    console.log(`Oh no, something went wrong. ${e}`);
+}
