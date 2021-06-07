@@ -1,6 +1,9 @@
 import express from 'express';
 const app = express();
 import { calculateBmi } from "./bmiCalculator";
+import { calculateExercises } from "./exerciseCalculator";
+
+app.use(express.json());
 
 app.get('/hello', (_req, res) => {
     res.send('Hello Ful Stack!');
@@ -18,6 +21,40 @@ app.get("/bmi", (req, res) => {
     }
 
     res.send({ weight, height, bmi });
+});
+
+app.post("/exercises", (req, res) => {
+    const { daily_exercises, target }: any = req.body;
+    let notValidDailyExerciseParams: boolean;
+    let validParameters: boolean | undefined;
+
+    if (target && daily_exercises) {
+        const isArray: boolean = Array.isArray(daily_exercises);
+
+        if (isArray) {
+            notValidDailyExerciseParams = (daily_exercises as [
+
+            ]).some((exercise: number) => isNaN(Number(exercise)));
+        } else {
+            notValidDailyExerciseParams = true;
+        }
+
+        validParameters = !notValidDailyExerciseParams && !isNaN(Number(target));
+    }
+
+    if (!target || !daily_exercises) {
+        return res.json({
+            error: "parameters missing",
+        });
+    } else if (!validParameters) {
+        return res.json({
+            error: "malformatted parameters",
+        });
+    }
+    const response = calculateExercises(daily_exercises, Number(target));
+
+    console.log({ response });
+    return res.json(response);
 });
 
 const PORT = 3003;
