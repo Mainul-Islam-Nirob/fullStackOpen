@@ -2,16 +2,23 @@
   "name": "body-mass-index",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "ts-node": "ts-node",
     "calculateBmi": "ts-node bmiCalculator.ts",
     "calculateExercises": "ts-node exerciseCalculator.ts",
+    "start": "ts-node index.ts",
+    "dev": "ts-node-dev index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Mainul Islam",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^15.6.1"
+    "@types/express": "^4.17.12",
+    "@types/node": "^15.6.1",
+    "ts-node-dev": "^1.1.6"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
   }
 }
