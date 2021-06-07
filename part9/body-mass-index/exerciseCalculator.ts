@@ -2,8 +2,8 @@ interface ExerciseHourResult {
     periodLength: number;
     trainingDays: number;
     success: boolean;
-    rating: number;
-    ratingDescription: string;
+    rating: number | undefined;
+    ratingDescription: string | undefined;
     target: number;
     average: number;
 }
@@ -38,8 +38,8 @@ const calculateExercises = (exerciseHours: number[], target: number): ExerciseHo
 }
 
 interface ExerciseInputValues {
-    exerciseHours: number[];
-    target: number;
+    exerciseHours: (number | null)[],
+    target: number | null | undefined,
 }
 
 

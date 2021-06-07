@@ -9,6 +9,7 @@
     "calculateExercises": "ts-node exerciseCalculator.ts",
     "start": "ts-node index.ts",
     "dev": "ts-node-dev index.ts",
+    "lint": "eslint --ext .ts .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Mainul Islam",
@@ -16,6 +17,9 @@
   "devDependencies": {
     "@types/express": "^4.17.12",
     "@types/node": "^15.6.1",
+    "@typescript-eslint/eslint-plugin": "^4.26.0",
+    "@typescript-eslint/parser": "^4.26.0",
+    "eslint": "^7.28.0",
     "ts-node-dev": "^1.1.6"
   },
   "dependencies": {

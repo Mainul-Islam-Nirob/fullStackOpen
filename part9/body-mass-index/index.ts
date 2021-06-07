@@ -8,8 +8,7 @@ app.get('/hello', (_req, res) => {
 
 app.get("/bmi", (req, res) => {
     const { weight, height } = req.query;
-    const validParameters: boolean =
-        !isNaN(Number(height)) && !isNaN(Number(weight));
+    const validParameters: boolean = !isNaN(Number(height)) && !isNaN(Number(weight));
     const bmi = calculateBmi(Number(height), Number(weight));
 
     if (!validParameters || !weight || !height) {
