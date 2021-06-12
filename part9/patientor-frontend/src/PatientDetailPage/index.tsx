@@ -6,10 +6,14 @@ import { Patient, Entry } from "../types";
 import { apiBaseUrl } from "../constants";
 import { useStateValue, setPatientDetails } from "../state";
 import styles from "./PatientDetailPage.module.css";
+// import styles from "./Diagnoses.module.css";
+
+
 
 const PatientDetailPage: React.FC = () => {
     const [{ patient }, dispatch] = useStateValue();
     const { id } = useParams<{ id: string }>();
+    const [{ diagnoses }] = useStateValue();
 
     React.useEffect(() => {
         const fetchPatientDetails = async () => {
@@ -57,11 +61,17 @@ const PatientDetailPage: React.FC = () => {
                        <span>{entry.date } { entry.description}</span>
                        <ul>
                         {
-                            entry.diagnosisCodes?.map((diagnosisCode) => (
-                                <li key={diagnosisCode}>
-                                    {diagnosisCode}
-                                </li>
-                            ) )
+                            entry.diagnosisCodes?.map((diagnosisCode, i: number) => {
+                                const diagnosis = diagnoses?.filter(
+                                    (diagnosis) => diagnosis.code === diagnosisCode
+                                );
+                                return (
+                                    <li key={`${entry.id}-${i}`}>
+                                        <span>{diagnosisCode}</span>{" -- "}
+                                        <span>{diagnosis?.length > 0 && diagnosis[0].name}</span>
+                                    </li>
+                                );
+                             } )
                         }
                         </ul>
                    </div> 
