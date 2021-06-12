@@ -17,11 +17,11 @@ const getPatients = (): PublicPatient[] => {
 const findPatientById = (id: string): Patient | undefined => {
     let patient = patients.find((p) => p.id === id);
 
-    if (!patient?.entries)
+    if (patient && !patient?.entries)
         patient = {
             ...patient,
             entries: [],
-        } as Patient;
+        };
 
     return patient;
 };
