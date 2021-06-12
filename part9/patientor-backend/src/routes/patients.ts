@@ -6,7 +6,16 @@ import toNewPatient from "../utils";
 const router = express.Router();
 
 router.get("/", (_req, res) => {
-    res.send(patientService.getNonSensitivePatients());
+    res.send(patientService.getPatients());
+});
+
+router.get("/:id", (req, res) => {
+    const patient = patientService.findPatientById(req.params.id);
+    if (patient) {
+        res.send(patient);
+    } else {
+        res.sendStatus(404);
+    }
 });
 
 router.post("/", (req, res) => {
@@ -21,15 +30,6 @@ router.post("/", (req, res) => {
         res.status(400).send(e.message);
     }
 
-//     const { name, dateOfBirth, gender, ssn, occupation } = req.body;
-//     const newPatient = patientService.addPatient({
-//         name,
-//         dateOfBirth,
-//         gender,
-//         ssn,
-//         occupation,
-// });
-//     res.json(newPatient);
 });
 
 export default router;
