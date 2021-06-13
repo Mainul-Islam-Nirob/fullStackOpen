@@ -6,14 +6,14 @@ import { Patient, Entry } from "../types";
 import { apiBaseUrl } from "../constants";
 import { useStateValue, setPatientDetails } from "../state";
 import styles from "./PatientDetailPage.module.css";
-// import styles from "./Diagnoses.module.css";
+import EntryDetails from "./EntryDetails";
 
 
 
 const PatientDetailPage: React.FC = () => {
     const [{ patient }, dispatch] = useStateValue();
     const { id } = useParams<{ id: string }>();
-    const [{ diagnoses }] = useStateValue();
+    // const [{ diagnoses }] = useStateValue();
 
     React.useEffect(() => {
         const fetchPatientDetails = async () => {
@@ -54,7 +54,7 @@ const PatientDetailPage: React.FC = () => {
             <div>
                 <span>occupation:</span> <span>{patient?.occupation}</span>
             </div>
-            {patient?.entries && patient.entries?.length > 0 && <h3>Entries</h3>}
+            {/* {patient?.entries && patient.entries?.length > 0 && <h3>Entries</h3>}
             {
                 patient?.entries?.map((entry: Entry) => (
                    <div key={entry.id}>
@@ -76,7 +76,12 @@ const PatientDetailPage: React.FC = () => {
                         </ul>
                    </div> 
                 ))
-            }
+            } */}
+
+            {patient?.entries && patient.entries?.length > 0 && <h3>Entries</h3>}
+            {patient?.entries?.map((entry: Entry) => (
+                <EntryDetails key={entry.id} entry={entry} />
+            ))}
         </section>
     );
 };
