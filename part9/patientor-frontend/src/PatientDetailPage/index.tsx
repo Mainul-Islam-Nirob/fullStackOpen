@@ -24,6 +24,8 @@ const PatientDetailPage: React.FC = () => {
     // const [{ diagnoses }] = useStateValue();
     const [modalOpen, setModalOpen] = React.useState<boolean>(false);
 
+    const [error, setError] = React.useState<string | undefined>();
+
     const openModal = (): void => setModalOpen(true);
 
     const closeModal = (): void => {
@@ -104,12 +106,12 @@ const PatientDetailPage: React.FC = () => {
                 entry
             );
 
-            console.log({ newEntry });
+          
             dispatch(addEntry(newEntry));
             closeModal();
         } catch (e) {
             console.error(e.response.data);
-            // setError(e.response.data.error);
+            setError(e.response.data.error);
         }
     };
 
@@ -133,6 +135,7 @@ const PatientDetailPage: React.FC = () => {
                 modalOpen={modalOpen}
                 onSubmit={submitNewEntry}
                 onClose={closeModal}
+                error={error}
             />
             <Button onClick={() => openModal()}>Add New Entry</Button>
         </section>

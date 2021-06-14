@@ -41,3 +41,23 @@ export const isHospitalEntry = (values: any): values is HospitalEntry => {
     }
     return false;
 };
+
+
+export const isValidDate = (date: any): boolean => {
+    const regEx = /^\d{4}-\d{2}-\d{2}$/;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    if (!date.match(regEx)) return false; // Invalid format
+    const d = new Date(date);
+    const dNum = d.getTime();
+    if (!dNum && dNum !== 0) return false; // NaN value, Invalid date
+    return d.toISOString().slice(0, 10) === date;
+};
+
+export const isValidHealthCeckValue = (value: any): boolean => {
+    return (
+        value === HealthCheckRating.Healthy ||
+        value === HealthCheckRating.LowRisk ||
+        value === HealthCheckRating.HighRisk ||
+        value === HealthCheckRating.CriticalRisk
+    );
+};
